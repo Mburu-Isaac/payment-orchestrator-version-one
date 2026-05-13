@@ -4,7 +4,6 @@ import pytz
 
 
 
-
 class Location:
 
     def __init__(
@@ -33,7 +32,7 @@ class Location:
 
             location_info = {
                 "timezone": timezone,
-                "local_time": current_time.strftime("%Y-%m-%d %H:%M:%S"),
+                "local_time": current_time,
                 "is_valid": True
             }
 

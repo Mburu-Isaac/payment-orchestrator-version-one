@@ -8,7 +8,8 @@ class NotificationHandler:
     def __init__(self):
         pass
 
-    def email_handler(self,
+    def email_handler(
+        self,
         to_email,
         subject,
         body,
@@ -22,7 +23,7 @@ class NotificationHandler:
             company_email = os.environ.get("COMPANY_EMAIL")
 
             email = EmailMessage()
-            email["From"] = f"{company_email}"
+            email["From"] = f"{company_name} <{company_email}>"
             email["To"] = to_email
             email["Subject"] = subject
             email.set_content(body)
