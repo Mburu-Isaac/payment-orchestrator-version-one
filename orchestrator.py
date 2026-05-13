@@ -1,12 +1,5 @@
-from myorchestrator.utilities.drafting import Drafts
+from myorchestrator.email_service import EmailHandler
 
-draft = Drafts(
-    user="mburu",
-    otp_type="user-signup",
-    email="kamauisaac192@gmail.com",
-    duration=5
-)
-
-print(draft.otp_verification())
-
+email = EmailHandler()
+print(email.send_otp())
 

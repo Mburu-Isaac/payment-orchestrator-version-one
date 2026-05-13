@@ -1,0 +1,24 @@
+{% extends "emails/base.html" %}
+{% block title %} OTP Verification {% endblock %}
+{% block content %}
+
+    <p> Dear Customer, </p>
+    <p> Please use the following one time password to verify your email address: </p>
+
+    <h2> OTP: {{ otp }} </h2> 
+
+    <p>
+
+        This OTP code will expire at <strong> {{ expires_at }} </strong>
+
+    </p>
+
+    <p> if you did not request the OTP please ignore this email. </p>
+
+    <p> 
+        Regards, 
+        <br>
+        {{ sender_name }} 
+    </p>
+
+{% endblock %}
