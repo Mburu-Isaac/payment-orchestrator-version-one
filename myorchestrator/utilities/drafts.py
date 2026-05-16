@@ -15,12 +15,10 @@ class Drafts:
         self,
         user,
         otp_type,
-        email,
         duration
     ):
         self.user = user
         self._otp_type = otp_type
-        self.email = email
         self.duration = duration
         self.timezone = timezoneinfo["timezone"]
         self.local_time = timezoneinfo["local_time"]

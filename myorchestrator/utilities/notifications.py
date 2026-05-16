@@ -1,4 +1,4 @@
-
+from ..email_service import EmailHandler
 
 class NotificationHandler:
     

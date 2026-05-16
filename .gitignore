@@ -1,2 +1,6 @@
 __pycache__/
 .env
+-out
+-pubout
+keys/
+config.py

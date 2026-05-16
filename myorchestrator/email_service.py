@@ -3,22 +3,14 @@ from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 import smtplib
 import os
-from .utilities.drafts import Drafts
-
-
-
-draft = Drafts(
-    user="mburu",
-    otp_type="user-signup",
-    email="kamauisaac192@gmail.com",
-    duration=5
-)
 
 
 class EmailHandler:
 
     def __init__(
         self,
+        draft,
+        receiver_email,
         templates_dir="templates"
     ):
         self.smtp_host = os.environ.get("SMTP_HOST")
@@ -34,6 +26,9 @@ class EmailHandler:
             ),
             autoescape=True
         )
+        self.draft = draft
+        self.receiver_email = receiver_email
+    
 
     def _render_template(
         self,
@@ -114,11 +109,10 @@ class EmailHandler:
 
     def send_otp(
         self,
-        to_email=draft.email,
         subject="OTP Verification",
     ):
 
-        otp_details = draft._generate_otp()
+        otp_details = self.draft._generate_otp()
         otp = otp_details[0]
 
         email_context = {
@@ -128,7 +122,7 @@ class EmailHandler:
         }
         
         self.send_email(
-            to_email=to_email,
+            to_email=self.receiver_email,
             subject=subject,
             template_name="emails/otp.html",
             context=email_context,
