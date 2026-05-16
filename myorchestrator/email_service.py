@@ -112,7 +112,7 @@ class EmailHandler:
         subject="OTP Verification",
     ):
 
-        otp_details = self.draft._generate_otp()
+        otp_details = self.draft._draft_otp()
         otp = otp_details[0]
 
         email_context = {
@@ -134,3 +134,6 @@ class EmailHandler:
             "otp": otp,
             "message":"OTP sent successfully"
         }
+
+    def send_verification_email():
+        pass

@@ -1,12 +1,11 @@
 from .geolocation import Location
 from .tools import generate_otp
-from .notifications import NotificationHandler
 from datetime import timedelta
+from .tokens import TokenManager
 
 
 location = Location(None)
 timezoneinfo = location.get_user_timezone()
-notification = NotificationHandler()
 
 
 class Drafts:
@@ -24,7 +23,7 @@ class Drafts:
         self.local_time = timezoneinfo["local_time"]
 
 
-    def _generate_otp(self):
+    def _draft_otp(self):
         otp = generate_otp()
         expires_at = self.local_time + timedelta(minutes=self.duration)
 
@@ -38,8 +37,34 @@ class Drafts:
         return otp, expires_at, message
 
 
-    def verification_email(self):
-        pass
+    def _draft_verification_email(self):
+        
+        # generate access token
+        token_manager = TokenManager(user="user") 
+        token = token_manager.generate_access_token()
+
+        
+        # retrieve verification token
+        # retrieve token expiry
+
+        # verification_link containing the verification token
+        verification_link = f"link token validation?token={token}"
+        
+
+        subject = "Email Verification"
+
+        message = f"""
+            use the following link to verify your emil:
+
+            {verification_link}
+
+            This link will expire in 15 minutes
+
+            If you did not request the link, please ignore this email
+        """
+
+        return verification_link, subject, message
+    
 
     def reset_password(self):
         pass
