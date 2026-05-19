@@ -40,8 +40,8 @@ class Drafts:
     def _draft_verification_email(self):
         
         # generate access token
-        token_manager = TokenManager(user="user") 
-        token = token_manager.generate_access_token()
+        token_manager = TokenManager(user=self.user) 
+        token, expires_at = token_manager.generate_access_token()
 
         
         # retrieve verification token

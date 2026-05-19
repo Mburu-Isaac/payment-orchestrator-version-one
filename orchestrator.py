@@ -1,5 +1,6 @@
 from myorchestrator.email_service import EmailHandler
 from myorchestrator.utilities.drafts import Drafts
+from pprint import pprint
 
 
 new_user = {
@@ -21,7 +22,7 @@ new_user["password"] = input("password: ")
 if new_user:
     
     draft = Drafts(
-        user=new_user.get("username"),
+        user=new_user,
         otp_type="OTP Verification",
         duration=5
     )
@@ -32,8 +33,8 @@ if new_user:
 
     print(email.send_otp())
 
-
-
+    verification_email = draft._draft_verification_email()
+    pprint(verification_email)
 
 
 
