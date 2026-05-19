@@ -1,16 +1,18 @@
 import json
 from pathlib import Path
+from myorchestrator.email_service import EmailHandler
+from myorchestrator.utilities.drafts import Drafts
 
 
 class Routes:
 
     @staticmethod
-    def store_user(data, file_path):
+    def store_user(user_object, file_path):
 
         try:
             with open(file_path, mode="w", encoding="utf-8") as file:
 
-                json.dump(data, file, indent=4, ensure_ascii=False)
+                json.dump(user_object, file, indent=4, ensure_ascii=False)
 
             return {"status": "success", "feedback": f"data stored at {file_path}"}
 
@@ -38,7 +40,7 @@ class Routes:
 
     def __init__(self):
         project_root = Path(__file__).resolve().parent.parent.parent
-        self.file_path = project_root / "vault/users.json"
+        self.project_root = project_root
 
     def user_signup(self):
         print("welcome to my system. Mi Casa, Su Casa.")
@@ -52,7 +54,18 @@ class Routes:
             "password": input("password: "),
         }
 
-        process_storage = self.store_user(new_user, self.file_path)
+        if new_user:
+
+            draft = Drafts(user=new_user, otp_type="OTP Verification", duration=5)
+            email = EmailHandler(
+                draft=draft, receiver_email=new_user.get("email_address")
+            )
+
+            print(email.send_otp())
+
+        process_storage = self.store_user(
+            user_object=new_user, file_path=self.project_root / "vault/users/users.json"
+        )
 
         if process_storage.get("status") == "success":
             return "welcome home"
@@ -68,7 +81,7 @@ class Routes:
         email = input("enter your email: ").lower()
         password = input("verify password: ")
 
-        user_details = self.load_user(self.file_path)
+        user_details = self.load_user(self.project_root / "vault/users/users.json")
         stored_address = user_details.get("email_address") if user_details else None
         stored_password = user_details.get("password") if user_details else None
 
@@ -88,3 +101,7 @@ class Routes:
 
             if stored_password == password:
                 return "good to have you back"
+
+
+#     verification_email = draft._draft_verification_email()
+#     pprint(verification_email)

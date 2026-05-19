@@ -1,5 +1,3 @@
-from myorchestrator.email_service import EmailHandler
-from myorchestrator.utilities.drafts import Drafts
 from myorchestrator.routes.routes import Routes
 
 
@@ -49,19 +47,3 @@ elif intent == 2:
 
 
 
-# if new_user:
-
-#     draft = Drafts(
-#         user=new_user,
-#         otp_type="OTP Verification",
-#         duration=5
-#     )
-#     email = EmailHandler(
-#         draft=draft,
-#         receiver_email=new_user.get("email_address")
-#     )
-
-#     print(email.send_otp())
-
-#     verification_email = draft._draft_verification_email()
-#     pprint(verification_email)
