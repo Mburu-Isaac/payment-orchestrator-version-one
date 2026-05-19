@@ -4,3 +4,4 @@ __pycache__/
 -pubout
 keys/
 config.py
+vault/

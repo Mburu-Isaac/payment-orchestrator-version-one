@@ -11,8 +11,9 @@ FILE_PATH = project_root / "vault/users.json"
 def store_user(data):
 
     try:
-        with open(FILE_PATH, mode="w", encoding="utf-8") as file:
-            json.dumps(
+        with open(FILE_PATH, mode="w", encoding="utf-8") as file:          
+            
+            json.dump(
                 data,
                 file,
                 indent=4,
@@ -22,10 +23,10 @@ def store_user(data):
         print(f"data stored at {FILE_PATH}")
 
     except Exception as e:
-        raise f"seriarization failed: {e}"
+        print(f"seriarization failed: {e}")
 
     except IOError as ioe:
-        raise f"file I/O exception occured: {ioe}"
+        print(f"file I/O exception occured: {ioe}")
 
 def load_user():
 
@@ -43,20 +44,16 @@ def load_user():
         return {}
 
 
-# new_user = {
-#     "user_id":"",
-#     "username":"",
-#     "phone_number":"",
-#     "email_address":"",
-#     "password":"",
-# }
+new_user = {
+    "user_id":1,
+    "username":input("username: ").lower(),
+    "phone_number":input("phone number:"),
+    "email_address":input("email address:"),
+    "password":input("password: "),
+}
 
-# print("User Signup")
+store_user(new_user)
 
-# new_user["username"] = input("username: ").lower()
-# new_user["phone_number"] = input("phone number: ")
-# new_user["email_address"] = input("email address:")
-# new_user["password"] = input("password: ")
 
 
 # if new_user:
