@@ -12,7 +12,12 @@ def store_user(data):
 
     try:
         with open(FILE_PATH, mode="w", encoding="utf-8") as file:
-            json.dumps(data, file, indent=4, ensure_ascii=False)
+            json.dumps(
+                data,
+                file,
+                indent=4,
+                ensure_ascii=False
+            )
 
         print(f"data stored at {FILE_PATH}")
 
@@ -22,6 +27,20 @@ def store_user(data):
     except IOError as ioe:
         raise f"file I/O exception occured: {ioe}"
 
+def load_user():
+
+    try:
+        
+        with open(FILE_PATH, mode="r", encoding=("utf-8")) as file:
+            return json.load(file)
+
+    except json.JSONDecodeError as e:
+        print(f"unable to parse data: {e}")
+        return {}
+
+    except IOError as e:
+        print(f"file I/O exception occured: {e}")
+        return {}
 
 
 # new_user = {
