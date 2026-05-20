@@ -2,41 +2,44 @@ import json
 from pathlib import Path
 from myorchestrator.email_service import EmailHandler
 from myorchestrator.utilities.drafts import Drafts
+from myorchestrator.utilities.tools import Tools
 
-
+tool = Tools()
 class Routes:
 
     @staticmethod
     def store_user(user_object, file_path):
 
         try:
-            with open(file_path, mode="w", encoding="utf-8") as file:
+            with open(
+                file_path,
+                mode="w",
+                encoding="utf-8") as file:
 
-                json.dump(user_object, file, indent=4, ensure_ascii=False)
+                json.dump(
+                    user_object,
+                    file,
+                    indent=4,
+                    ensure_ascii=False
+                )
 
-            return {"status": "success", "feedback": f"data stored at {file_path}"}
+            return {
+                "status": "success",
+                "feedback": f"data stored at {file_path}"
+            }
 
         except Exception as e:
-            return {"status": "failed", "error": f"seriarization failed: {e}"}
+            return {
+                "status": "failed",
+                "error": f"seriarization failed: {e}"
+            }
 
         except IOError as ioe:
-            return {"status": "failed", "error": f"file I/O exception occured: {ioe}"}
+            return {
+                "status": "failed",
+                "error": f"file I/O exception occured: {ioe}"
+            }
 
-    @staticmethod
-    def load_user(file_path):
-
-        try:
-
-            with open(file_path, mode="r", encoding=("utf-8")) as file:
-                return json.load(file)
-
-        except json.JSONDecodeError as e:
-            print(f"unable to parse data: {e}")
-            return {}
-
-        except IOError as e:
-            print(f"file I/O exception occured: {e}")
-            return {}
 
     def __init__(self):
         project_root = Path(__file__).resolve().parent.parent.parent
@@ -61,18 +64,37 @@ class Routes:
                 draft=draft, receiver_email=new_user.get("email_address")
             )
 
-            print(email.send_otp())
+            forward_otp = email.send_otp()
 
-        process_storage = self.store_user(
-            user_object=new_user, file_path=self.project_root / "vault/users/users.json"
-        )
+            if forward_otp.get("success"):
+                print("\n Loading ...\n")
+                print(f"{forward_otp.get("message")}\n- check mail -")
 
-        if process_storage.get("status") == "success":
-            return "welcome home"
+                user_otp_attempt = input("enter the 5-digit code from your email: ")
+                stored_otp = tool._load_stored_otp().get("otp")
 
-        else:
-            print(process_storage["error"])
-            return "internal error. kindly wait as we resolve your issue"
+                if user_otp_attempt != stored_otp:
+                    print("otp missmatch")
+
+                if user_otp_attempt == stored_otp:
+                    dispensed = tool._delete_used_otp()
+                    print(dispensed)
+
+            # verification_email = draft._draft_verification_email()
+            # pprint(verification_email)
+
+
+
+            process_storage = self.store_user(
+                user_object=new_user, file_path=self.project_root / "vault/users/users.json"
+            )
+
+            if process_storage.get("status") == "success":
+                return "welcome home"
+
+            else:
+                print(process_storage["error"])
+                return "internal error. kindly wait as we resolve your issue"
 
     def login(self):
 
@@ -103,5 +125,27 @@ class Routes:
                 return "good to have you back"
 
 
-#     verification_email = draft._draft_verification_email()
-#     pprint(verification_email)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

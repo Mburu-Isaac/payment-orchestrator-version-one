@@ -1,5 +1,5 @@
 from .geolocation import Location
-from .tools import generate_otp
+from .tools import Tools
 from datetime import timedelta
 from .tokens import TokenManager
 import json
@@ -9,39 +9,11 @@ from pathlib import Path
 location = Location(None)
 timezoneinfo = location.get_user_timezone()
 
+tool = Tools()
+
 
 class Drafts:
 
-    @staticmethod
-    def store_otp(otp_data, file_path):
-        
-        with open(
-            file_path,
-            mode="w",
-            encoding=("utf-8")) as file:
-
-            json.dump(
-                otp_data,
-                file,
-                indent=4,
-                ensure_ascii=False
-            )
-
-    @staticmethod
-    def load_otp(file_path):
-        
-        try:
-
-            with open(file_path, mode="r", encoding=("utf-8")) as file:
-                return json.load(file)
-
-        except json.JSONDecodeError as e:
-            print(f"unable to parse data: {e}")
-            return {}
-
-        except IOError as e:
-            print(f"file I/O exception occured: {e}")
-            return {}
 
     def __init__(
         self,
@@ -64,13 +36,13 @@ class Drafts:
             "expires_at":""
         }
 
-        otp = generate_otp()
+        otp = tool.generate_otp()
         expires_at = self.local_time + timedelta(minutes=self.duration)
 
         otp_data["otp"] = otp
         otp_data["expires_at"] = expires_at.strftime("%Y-%m-%d %H:%M:%S")
 
-        self.store_otp(
+        tool.store_otp(
             otp_data=otp_data,
             file_path=self.project_root/"vault/otps/otps.json"
         )
