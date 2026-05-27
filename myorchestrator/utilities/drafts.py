@@ -1,18 +1,19 @@
-from .geolocation import Location
 from .tools import Tools
 from datetime import timedelta
 from .tokens import TokenManager
-import json
 from pathlib import Path 
+from pprint import pprint
 
-
-location = Location(None)
-timezoneinfo = location.get_user_timezone()
 
 tool = Tools()
 
 
 class Drafts:
+
+    @staticmethod
+    def create_token_object(user):
+        token = TokenManager(user=user)
+        return token
 
 
     def __init__(
@@ -24,9 +25,12 @@ class Drafts:
         self.user = user
         self._otp_type = otp_type
         self.duration = duration
-        self.timezone = timezoneinfo["timezone"]
-        self.local_time = timezoneinfo["local_time"]
+        # pprint(tool.timezoneinfo)
+        self.timezone = tool.timezoneinfo["timezone"]
+        self.local_time = tool.timezoneinfo["local_time"]
         self.project_root = Path(__file__).resolve().parent.parent.parent
+        self.token_manager = self.create_token_object(user=self.user)
+
 
 
     def _draft_otp(self):
@@ -47,6 +51,8 @@ class Drafts:
             file_path=self.project_root/"vault/otps/otps.json"
         )
 
+        subject = "OTP Verification"
+
         message = f"""
                         Dear Customer,
                         please use the following one-time password to verify your email
@@ -54,27 +60,23 @@ class Drafts:
                         if you did not request the otp, please ignore this email
         """
 
-        return otp, expires_at, message
+        return otp, expires_at, message, subject
 
 
     def _draft_verification_email(self):
         
         # generate access token
-        token_manager = TokenManager(user=self.user) 
-        token, expires_at = token_manager.generate_access_token()
-
-        
-        # retrieve verification token
-        # retrieve token expiry
+        # retrieve verification token and expiry 
+        token, expires_at = self.token_manager.generate_access_token()
 
         # verification_link containing the verification token
-        verification_link = f"link token validation?token={token}"
+        verification_link = f"https://a1cb-217-199-148-238.ngrok-free.app?token={token}"
         
 
         subject = "Email Verification"
 
         message = f"""
-            use the following link to verify your emil:
+            use the following link to verify your email:
 
             {verification_link}
 
@@ -83,7 +85,7 @@ class Drafts:
             If you did not request the link, please ignore this email
         """
 
-        return verification_link, subject, message
+        return verification_link, subject, message, expires_at
     
 
     def reset_password(self):

@@ -12,6 +12,9 @@ class Location:
     ):
         self.user_ip = user_ip
 
+    def timezoneinfo_cache(self):
+        pass
+
     def get_user_timezone(self):
         
         timezone = None

@@ -50,3 +50,18 @@ class TokenManager:
         )
 
         return token, expires_at
+
+    def validate_access_token(self, token: str) -> dict:
+        
+        try:
+            payload = jwt.decode(
+                token,
+                public_key=self.public_key,
+                algorithms=[self.algorithm]
+            )
+            return payload
+
+        except jwt.ExpiredSignatureError:
+            raise ValueError("Token has expired")
+        except jwt.InvalidTokenError:
+            raise ValueError("Invalid token")

@@ -107,18 +107,14 @@ class EmailHandler:
             print(f"Email forwarding failed: {error}")
             return False
 
-    def send_otp(
-        self,
-        subject="OTP Verification",
-    ):
+    def send_otp(self):
 
-        otp_details = self.draft._draft_otp()
-        otp = otp_details[0]
+        otp, expires_at, message, subject = self.draft._draft_otp()
 
         email_context = {
             "otp":otp,
             "sender_name":self.sender_name,
-            "expires_at":otp_details[1].strftime("%H:%M")
+            "expires_at":expires_at.strftime("%H:%M")
         }
         
         self.send_email(
@@ -126,7 +122,7 @@ class EmailHandler:
             subject=subject,
             template_name="emails/otp.html",
             context=email_context,
-            body=otp_details[2]
+            body=message
         )
 
         return {
@@ -135,5 +131,25 @@ class EmailHandler:
             "message":"OTP sent successfully"
         }
 
-    def send_verification_email():
-        pass
+    def send_verification_email(self):
+        
+        verification_link, message, subject, expires_at = self.draft._draft_verification_email()
+
+        email_context = {
+            "verification_link": verification_link,
+            "expires_at": expires_at,
+            "sender_name": self.sender_name
+        }
+
+        self.send_email(
+            to_email=self.receiver_email,
+            subject=subject,
+            template_name="emails/verify_email.html",
+            context=email_context,
+            body=message
+        )
+
+        return {
+            "success":True,
+            "message":"email sent successfully"
+        }
