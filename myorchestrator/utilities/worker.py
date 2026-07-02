@@ -9,6 +9,7 @@ class Worker:
         pass
 
 
+    @staticmethod
     def recurrence_frequecy(
         self,
         recurrence_start,
