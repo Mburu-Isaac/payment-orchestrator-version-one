@@ -38,6 +38,7 @@ class Worker:
 
         return recur_at
 
-        
+    def stk_push(self):
+        pass
 
 
