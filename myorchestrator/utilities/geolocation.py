@@ -1,7 +1,8 @@
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
-
+from zoneinfo import ZoneInfo
+import time
 
 
 class Location:
@@ -11,21 +12,31 @@ class Location:
         user_ip
     ):
         self.user_ip = user_ip
+        self.cached_timezoneinfo = None
+        # self.location_info = self.get_user_timezone()
+        # self.zoneinfo = self.location_info["local_time"]
+        # self.cache_timeout = self.zoneinfo + timedelta(minutes=60)
 
-    def timezoneinfo_cache(self):
-        pass
+    
+    def cache_timezone_info(self):
+
+        if self.cached_timezoneinfo is None:
+            pass
+        
 
     def get_user_timezone(self):
+
+        self.cache_timezone_info()
         
         timezone = None
-
+            
         try:
             if self.user_ip:
                 api_url = f"https://ipapi.co/{self.user_ip}/timezone/"
             else:
                 api_url = "https://ipapi.co/timezone/"
 
-            response = requests.get(api_url, timeout=5)
+            response = requests.get(api_url) #timeout=5)
             response.raise_for_status()
 
             timezone = response.text.strip()
@@ -39,7 +50,9 @@ class Location:
                 "is_valid": True
             }
 
-            return location_info
+            self.cached_timezoneinfo = location_info
+
+            return self.cached_timezoneinfo
 
         except requests.exceptions.Timeout:
             return {"error": "geo-API request timed out"}
@@ -54,5 +67,10 @@ class Location:
         except Exception as error:
             return {f"an unexpected error occured: {error}"}
 
+        # else:
+            # return self.cache_timezone_info()
 
 
+
+
+            

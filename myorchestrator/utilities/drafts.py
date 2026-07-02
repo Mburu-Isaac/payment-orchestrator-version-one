@@ -25,7 +25,7 @@ class Drafts:
         self.user = user
         self._otp_type = otp_type
         self.duration = duration
-        # pprint(tool.timezoneinfo)
+        pprint(tool.timezoneinfo)
         self.timezone = tool.timezoneinfo["timezone"]
         self.local_time = tool.timezoneinfo["local_time"]
         self.project_root = Path(__file__).resolve().parent.parent.parent
