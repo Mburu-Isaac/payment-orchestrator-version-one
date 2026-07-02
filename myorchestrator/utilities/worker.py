@@ -8,9 +8,8 @@ class Worker:
     def __init__(self):
         pass
 
-
+    @staticmethod
     def recurrence_frequecy(
-        self,
         recurrence_start,
         frequency
     ):
