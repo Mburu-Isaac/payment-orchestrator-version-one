@@ -29,7 +29,7 @@ from datetime import datetime
 worker = Worker()
 print(worker.recurrence_frequecy(
     recurrence_start=datetime.now(),
-    frequency="annually"
+    frequency="daily"
 ))
 
 
