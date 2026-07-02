@@ -5,8 +5,10 @@ from myorchestrator.utilities.drafts import Drafts
 from myorchestrator.utilities.tools import Tools
 import time
 from pprint import pprint
+from myorchestrator.utilities.utilities import Utilities
 
 tool = Tools()
+utility = Utilities()
 class Routes:
 
     @staticmethod
@@ -49,12 +51,21 @@ class Routes:
 
     @staticmethod
     def get_user():
+
+        username = input("username: ").lower()
+        phone_number = input("phone number:")
+        email_address = input("email address:")
+        password = input("password: ")
+
+
+        phone_number = utility.canonicalize_phone_number(phone_number)
+
         return {
             "user_id": 1,
-            "username": input("username: ").lower(),
-            "phone_number": input("phone number:"),
-            "email_address": input("email address:"),
-            "password": input("password: "),
+            "username": username,
+            "phone_number": phone_number,
+            "email_address": email_address,
+            "password": password,
         }
 
     @staticmethod
@@ -66,47 +77,48 @@ class Routes:
         print("signup")
 
         new_user = self.get_user()
+        pprint(new_user)
 
-        if new_user:
+        # if new_user:
 
-            draft = Drafts(user=new_user, otp_type="OTP Verification", duration=5)
+        #     draft = Drafts(user=new_user, otp_type="OTP Verification", duration=5)
 
-            time.sleep(1)
-            print("\n Loading ...\n")
+        #     time.sleep(1)
+        #     print("\n Loading ...\n")
 
-            email = EmailHandler(
-                draft=draft, receiver_email=new_user.get("email_address")
-            )
+        #     email = EmailHandler(
+        #         draft=draft, receiver_email=new_user.get("email_address")
+        #     )
 
-            forward_otp = email.send_otp()
+        #     forward_otp = email.send_otp()
 
-            if forward_otp.get("success"):
-                print(f"{forward_otp.get("message")}\n- check mail -\n")
+        #     if forward_otp.get("success"):
+        #         print(f"{forward_otp.get("message")}\n- check mail -\n")
 
-                time.sleep(2)
-                user_otp_attempt = self.get_otp_attempt()
+        #         time.sleep(2)
+        #         user_otp_attempt = self.get_otp_attempt()
 
-                otp_verification = tool._verify_otp(
-                    _attempt=user_otp_attempt,
-                )
-
-
-                if otp_verification["success"]:
-
-                    verification_email = email.send_verification_email()
-                    pprint(verification_email)
+        #         otp_verification = tool._verify_otp(
+        #             _attempt=user_otp_attempt,
+        #         )
 
 
-                    process_storage = self.store_user(
-                        user_object=new_user, file_path=self.project_root / "vault/users/users.json"
-                    )
+        #         if otp_verification["success"]:
 
-                    if process_storage.get("status") == "success":
-                        return "welcome home"
+        #             verification_email = email.send_verification_email()
+        #             pprint(verification_email)
 
-                    else:
-                        print(process_storage["error"])
-                        return "internal error. kindly wait as we resolve your issue"
+
+        #             process_storage = self.store_user(
+        #                 user_object=new_user, file_path=self.project_root / "vault/users/users.json"
+        #             )
+
+        #             if process_storage.get("status") == "success":
+        #                 return "welcome home"
+
+        #             else:
+        #                 print(process_storage["error"])
+        #                 return "internal error. kindly wait as we resolve your issue"
 
     def login(self):
 
