@@ -50,7 +50,7 @@ class Routes:
         self.project_root = project_root
 
     @staticmethod
-    def get_user():
+    def get_user(): 
 
         username = input("username: ").lower()
         phone_number = input("phone number:")

@@ -6,3 +6,4 @@ keys/
 config.py
 vault/
 .vscode/
+\.venv/
