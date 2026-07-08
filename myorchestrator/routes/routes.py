@@ -6,9 +6,11 @@ from myorchestrator.utilities.tools import Tools
 import time
 from pprint import pprint
 from myorchestrator.utilities.utilities import Utilities
+from myorchestrator.utilities.notifications import NotificationHandler
 
 tool = Tools()
 utility = Utilities()
+notification = NotificationHandler()
 class Routes:
 
     @staticmethod
@@ -57,8 +59,15 @@ class Routes:
         email_address = input("email address:")
         password = input("password: ")
 
-
         phone_number = utility.canonicalize_phone_number(phone_number)
+        otp_code = tool.generate_otp()
+
+        sms = notification.sms_handler(
+            contact=phone_number,
+            otp_code=otp_code
+        )
+        
+        pprint(sms)
 
         return {
             "user_id": 1,

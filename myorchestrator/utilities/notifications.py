@@ -12,8 +12,12 @@ class NotificationHandler:
     def __init__(self):
         self.smsmobileapikey = os.getenv("SMSMOBILEAPIKEY")
 
-    def sms_handler(self):
+    def sms_handler(
+        self,
+        contact,
+        otp_code
+    ):
         sms = self.initialize_sms_sender(api_key=self.smsmobileapikey)
         return sms.send_message(
-            to="+254743277087", message="Hello from this other side"
+            to=f"{contact}", message=f"Good evening. Enter the following otp for verification \n {otp_code}"
         )
