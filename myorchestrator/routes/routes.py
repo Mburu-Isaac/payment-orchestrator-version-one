@@ -11,48 +11,32 @@ from myorchestrator.utilities.notifications import NotificationHandler
 tool = Tools()
 utility = Utilities()
 notification = NotificationHandler()
+
+
 class Routes:
 
     @staticmethod
     def store_user(user_object, file_path):
 
         try:
-            with open(
-                file_path,
-                mode="w",
-                encoding="utf-8") as file:
+            with open(file_path, mode="w", encoding="utf-8") as file:
 
-                json.dump(
-                    user_object,
-                    file,
-                    indent=4,
-                    ensure_ascii=False
-                )
+                json.dump(user_object, file, indent=4, ensure_ascii=False)
 
-            return {
-                "status": "success",
-                "feedback": f"data stored at {file_path}"
-            }
+            return {"status": "success", "feedback": f"data stored at {file_path}"}
 
         except Exception as e:
-            return {
-                "status": "failed",
-                "error": f"seriarization failed: {e}"
-            }
+            return {"status": "failed", "error": f"seriarization failed: {e}"}
 
         except IOError as ioe:
-            return {
-                "status": "failed",
-                "error": f"file I/O exception occured: {ioe}"
-            }
-
+            return {"status": "failed", "error": f"file I/O exception occured: {ioe}"}
 
     def __init__(self):
         project_root = Path(__file__).resolve().parent.parent.parent
         self.project_root = project_root
 
     @staticmethod
-    def get_user(): 
+    def get_user():
 
         username = input("username: ").lower()
         phone_number = input("phone number:")
@@ -62,12 +46,22 @@ class Routes:
         phone_number = utility.canonicalize_phone_number(phone_number)
         otp_code = tool.generate_otp()
 
-        sms = notification.sms_handler(
-            contact=phone_number,
-            otp_code=otp_code
+        verification_direction = int(
+            input(
+                "choose the direction you wish to take for verification: \n 1. sms \n 2. Whatsapp \n 3. email \n response: "
+            )
         )
-        
-        pprint(sms)
+
+        if verification_direction == 1:
+
+            sms = notification.sms_handler(contact=phone_number, otp_code=otp_code)
+            pprint(sms)
+
+        elif verification_direction == 2:
+            whatsapp = notification.whatsapp_handler(
+                contact=phone_number, otp_code=otp_code
+            )
+            pprint(whatsapp)
 
         return {
             "user_id": 1,
@@ -79,7 +73,7 @@ class Routes:
 
     @staticmethod
     def get_otp_attempt():
-        return input("enter the 5-digit code from your email: ") 
+        return input("enter the 5-digit code from your email: ")
 
     def user_signup(self):
         print("welcome to my system. Mi Casa, Su Casa.")
@@ -111,12 +105,10 @@ class Routes:
         #             _attempt=user_otp_attempt,
         #         )
 
-
         #         if otp_verification["success"]:
 
         #             verification_email = email.send_verification_email()
         #             pprint(verification_email)
-
 
         #             process_storage = self.store_user(
         #                 user_object=new_user, file_path=self.project_root / "vault/users/users.json"
@@ -156,29 +148,3 @@ class Routes:
 
             if stored_password == password:
                 return "good to have you back"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

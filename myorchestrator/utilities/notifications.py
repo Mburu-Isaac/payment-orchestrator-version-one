@@ -28,4 +28,15 @@ class NotificationHandler:
         contact,
         otp_code
     ):
-        pass
+        payload = {
+            "recepients":f"{contact}",
+            "message":f"Good evening. Enter the following otp for verification \n {otp_code}",
+            "apikey": self.smsmobileapikey
+        }
+        
+        response = requests.post(
+            url="https://api.smsmobileapi.com/sendsms/waonly=yes",
+            data=payload,
+        )
+
+        return response.text
