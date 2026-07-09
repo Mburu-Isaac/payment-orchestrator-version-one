@@ -1,5 +1,6 @@
 from smsmobileapi import SMSSender
 import os
+import requests
 
 
 class NotificationHandler:
@@ -21,3 +22,10 @@ class NotificationHandler:
         return sms.send_message(
             to=f"{contact}", message=f"Good evening. Enter the following otp for verification \n {otp_code}"
         )
+
+    def whatsapp_handler(
+        self,
+        contact,
+        otp_code
+    ):
+        pass
