@@ -55,13 +55,13 @@ class Routes:
         if verification_direction == 1:
 
             sms = notification.sms_handler(contact=phone_number, otp_code=otp_code)
-            pprint(sms)
+            sms
 
         elif verification_direction == 2:
             whatsapp = notification.whatsapp_handler(
                 contact=phone_number, otp_code=otp_code
             )
-            pprint(whatsapp)
+            whatsapp
 
         return {
             "user_id": 1,
