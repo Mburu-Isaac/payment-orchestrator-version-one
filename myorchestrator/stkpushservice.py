@@ -1,4 +1,5 @@
 import os
+import requests
 
 
 
@@ -22,6 +23,19 @@ class StkPushService:
         self.amount = amount
         self.account_ref = account_ref
         self.transaction_desc = transaction_desc
+        self.access_token = ""
 
     def retrieve_access_token(self):
-        pass
+
+        token_request_response = requests.get(
+            url= "",
+            headers={
+                "Authorization": "Basic "
+            },
+            params={
+                "grant_type": "client_credentials"
+            },
+        )
+
+        token_request_response.raise_for_status()
+
