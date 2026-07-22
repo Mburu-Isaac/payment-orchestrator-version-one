@@ -38,8 +38,12 @@ class StkPushService:
             },
         )
 
-        token_request_response.raise_for_status()
-        return token_request_response.json()
+        if token_request_response.status_code == 200:
+            self.access_token = token_request_response.json()["access_token"]
+            return self.access_token
+        
+        else:
+            return token_request_response.json()["errorMessage"]
 
 
 
