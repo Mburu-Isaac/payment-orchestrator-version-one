@@ -1,6 +1,8 @@
 import os
 import requests
 import time
+import datetime
+import base64
 
 
 
@@ -11,21 +13,22 @@ class StkPushService:
 
     def __init__(
         self,
-        # transaction_number,
-        # business_short_code,
-        # amount,
-        # account_ref,
-        # transaction_desc
+        business_short_code,
+        amount,
+        transaction_number,
+        account_ref,
+        transaction_desc
     ):
         self.consumer_key = os.getenv("DARAJACONSUMERKEY")
         self.consumer_secret = os.getenv("DARAJACONSUMERSECRET")
         self.access_token = ""
         self.expires_at = 0
-        # self.transaction_number = transaction_number
-        # self.business_shortcode = business_short_code
-        # self.amount = amount
-        # self.account_ref = account_ref
-        # self.transaction_desc = transaction_desc
+        self.business_shortcode = business_short_code
+        self.transaction_type = "transaction_type"
+        self.amount = amount
+        self.transaction_number = transaction_number
+        self.account_ref = account_ref
+        self.transaction_desc = transaction_desc
 
     def retrieve_access_token(self):
 
@@ -62,7 +65,37 @@ class StkPushService:
             
 
     def initiate_stk_push(self):
+
         return self.token_cache()
+
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        encode_bytes = base64.b64encode(
+            f'{self.business_short_code}'
+        )
+
+        password = encode_bytes.decode("utf-8")
+
+        stkpush_response = requests.post(
+            
+            url="",
+            headers={
+                "Authorization": f"Bearer {self.access_token}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "BusinessShortCode": self.business_shortcode,
+                "Password": password,
+                "Timestamp": timestamp,
+                "TransactionType": self.transaction_type,
+                "Amount": self.amount,
+                "PartyA": self.transaction_number,
+                "PartyB": self.business_shortcode,
+                "PhoneNumber": self.mpesa_contact,
+                "CallBackURL":"",
+                "AccountRefernce": self.account_ref,
+                "TransactionDesc": self.transaction_desc
+            }
+        )
         
         
 
