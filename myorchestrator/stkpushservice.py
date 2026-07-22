@@ -24,6 +24,7 @@ class StkPushService:
         self.account_ref = account_ref
         self.transaction_desc = transaction_desc
         self.access_token = ""
+        self.expires_at = 0
 
     def retrieve_access_token(self):
 
@@ -38,4 +39,6 @@ class StkPushService:
         )
 
         token_request_response.raise_for_status()
+
+
 
