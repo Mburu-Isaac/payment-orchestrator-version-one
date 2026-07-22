@@ -22,3 +22,6 @@ class StkPushService:
         self.amount = amount
         self.account_ref = account_ref
         self.transaction_desc = transaction_desc
+
+    def retrieve_access_token(self):
+        pass
