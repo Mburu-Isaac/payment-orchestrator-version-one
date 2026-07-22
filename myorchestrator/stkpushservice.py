@@ -29,22 +29,27 @@ class StkPushService:
 
     def retrieve_access_token(self):
 
-        request_response = requests.get(
-            url= "https://sandbox.safaricom.co.ke/oauth/v1/generate",
-            headers={
-                "Authorization": f"Basic {os.getenv("DARAJABASICAUTHKEY")}"
-            },
-            params={
-                "grant_type": "client_credentials"
-            },
-        )
+        try:
 
-        if request_response.status_code == 200:
-            self.access_token = request_response.json()["access_token"]
-            self.expires_at = (time.time() + int(request_response.json()["expires_in"]) - 45)
-            return self.access_token
-        else:
-            return request_response.json()["errorMessage"]
+            request_response = requests.get(
+                url= "https://sandbox.safaricom.co.ke/oauth/v1/generate",
+                headers={
+                    "Authorization": f"Basic {os.getenv("DARAJABASICAUTHKEY")}"
+                },
+                params={
+                    "grant_type": "client_credentials"
+                },
+            )
+
+            if request_response.status_code == 200:
+                self.access_token = request_response.json()["access_token"]
+                self.expires_at = (time.time() + int(request_response.json()["expires_in"]) - 45)
+                return self.access_token
+            else:
+                return request_response.json()["errorMessage"]
+        
+        except KeyError:
+            return "No json was returned"
 
 
 
