@@ -27,10 +27,20 @@
 # pprint(notification.sms_handler())
 
 from myorchestrator.stkpushservice import StkPushService
+import time
 
 mpesa = StkPushService()
-access_token = mpesa.retrieve_access_token()
-print(access_token)
+
+
+now = time.time()
+lapse_time = time.time() + 60
+
+while now < lapse_time:
+
+    time.sleep(2)
+    access_token = mpesa.initiate_stk_push()
+
+    print(access_token)
 
 
 

@@ -52,8 +52,19 @@ class StkPushService:
             return "No json was returned"
 
 
-    def access_token_cache(self):
-        pass
+    def token_cache(self):
+        
+        if time.time() < self.expires_at:
+            return self.access_token
+        
+        else:
+            return self.retrieve_access_token()
+            
+
+    def initiate_stk_push(self):
+        return self.token_cache()
+        
+        
 
 
 
