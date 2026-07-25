@@ -1,6 +1,7 @@
 from ..extensions import db
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String
+from myorchestrator.extensions import login_manager
 
 
 class User(db.Model):
@@ -25,3 +26,6 @@ class User(db.Model):
         String(255), nullable=False, unique=False
     )
 
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))
