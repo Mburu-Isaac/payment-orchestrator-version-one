@@ -1,14 +1,10 @@
 from flask import Flask
-from .extensions import db
-from flask_login import LoginManager
 
-
-
-
+from .extensions import db, login_manager
 
 
 def launch_app():
-    
+
     app = Flask(__name__)
 
     app.config.from_object("config.Config")
@@ -20,12 +16,9 @@ def launch_app():
 
     db.init_app(app)
 
-    login_manager = LoginManager()
     login_manager.init_app(app)
-    
-    login_manager.login_view = 'auth/login'
-    login_manager.login_message = 'log in or sign up to view contents of this page'
 
+    login_manager.login_view = "auth/login"
+    login_manager.login_message = "log in or sign up to view contents of this page"
 
     return app
-    

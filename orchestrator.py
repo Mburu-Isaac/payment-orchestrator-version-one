@@ -11,7 +11,7 @@
 #     print(authenticate_user.user_signup())
 # elif intent == 2:
 #     print(authenticate_user.login())
-    
+
 
 # from myorchestrator.utilities.geolocation import Location
 # from pprint import pprint
@@ -41,40 +41,3 @@ while now < lapse_time:
     access_token = mpesa.initiate_stk_push()
 
     print(access_token)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
