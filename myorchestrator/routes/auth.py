@@ -7,10 +7,10 @@ from flask import Blueprint
 
 bp = Blueprint("auth", __name__)
 
-@bp.route()
+@bp.route("/signup")
 def register_client():
     pass
 
-@bp.route()
+@bp.route("/login")
 def login_client():
     pass
