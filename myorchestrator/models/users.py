@@ -15,5 +15,13 @@ class User(db.Model):
     transactions_number: Mapped[str] = mapped_column(
         String(20), nullable=False, unique=True
     )
+    email: Mapped[str] = mapped_column(
+        String(255), nullable=False, unique=True
+    )
+    password: Mapped[str] = mapped_column(
+        String(255), nullable=False, unique=False
+    )
+    recovery_pin: Mapped[str] = mapped_column(
+        String(255), nullable=False, unique=False
+    )
 
-    cards = db.relationship("Card", backref="user", lazy=True)
