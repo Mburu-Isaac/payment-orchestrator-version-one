@@ -48,12 +48,14 @@ def register_client():
 
     # hash_en.hash_email()
     # hash_en.hash_password()
-    return hash_en.encrypt_pin()
+    # hash_en.encrypt_pin()
+    return hash_en.encrypt_transaction_contact()
 
 
 @bp.route("/login")
 def login_client():
     pass
 
+from pprint import pprint
 
-print(register_client())
+pprint(register_client())

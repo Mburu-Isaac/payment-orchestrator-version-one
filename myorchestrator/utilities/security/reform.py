@@ -25,5 +25,27 @@ class HashAndEncrypt:
 
     def encrypt_pin(self):
         pin = self.encryptable.get("recoveryPin")
-        encryption = fernet.encrypt(pin.encode())
-        return encryption
+        recovpin_encryption = fernet.encrypt(pin.encode())
+        return recovpin_encryption
+
+    def encrypt_transaction_contact(self):
+
+        primary_number = self.encryptable.get("primaryNumber")
+
+        if self.single_contact == True:
+            contact = primary_number
+            contact_encryption = fernet.encrypt(contact.encode())
+            return contact_encryption
+        else:
+            contact = self.encryptable.get("transactionNumber")
+            transactions_encryption = fernet.encrypt(contact.encode())
+
+            encrypt_primary = self.encrypt_primary_contact(
+                primary_contact=primary_number
+            )
+
+            return transactions_encryption, encrypt_primary
+
+    def encrypt_primary_contact(self, primary_contact):
+        return fernet.encrypt(primary_contact.encode())
+            
