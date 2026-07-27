@@ -7,6 +7,12 @@ class HashAndEncrypt:
     def __init__(self, valuables):
         self.valuable_data = valuables
         self.encryptable = self.valuable_data.get("toEncrypt")
+        
+        if self.encryptable.get("transactionNumber") == self.encryptable.get("primaryNumber"):
+            self.single_contact = True
+        else:
+            self.single_contact = False
+
 
     def hash_email(self):
         email = self.valuable_data.get("email")
