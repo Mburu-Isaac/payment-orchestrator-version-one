@@ -9,7 +9,7 @@ def launch_app():
 
     app.config.from_object("config.Config")
 
-    from myorchestrator import models
+    from myorchestrator import models  # noqa:F401
     from myorchestrator.routes.auth import bp as client_auth
 
     app.register_blueprint(client_auth, url_prefix="/auth")
