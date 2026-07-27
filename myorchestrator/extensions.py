@@ -12,7 +12,7 @@ login_manager = LoginManager()
 # Password Hasher
 ph = PasswordHasher(
     time_cost=int(os.getenv("TIMECOST")),
-    memory_cost=int(os.getenv("MEMORYCOST")) * 1024,
+    memory_cost=int(os.getenv("MEMORYCOST")),
     parallelism=int(os.getenv("PARALLELISM")),
     hash_len=int(os.getenv("HASHLEN")),
     salt_len=int(os.getenv("SALTLEN"))

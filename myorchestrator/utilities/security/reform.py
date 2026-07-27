@@ -8,12 +8,13 @@ class HashAndEncrypt:
         self.valuable_data = valuables
 
     def hash_email(self):
-        email = self.valuable_data["email"]
+        email = self.valuable_data.get("email")
         hashed_email = sha256(email.strip().lower().encode()).hexdigest()
         return hashed_email
 
-    # def hash_password(self, hashable):
-    #     return ph.hash(hashable)
+    def hash_password(self):
+        password = self.valuable_data.get("password")
+        return ph.hash(password)
 
     # def encrypt_pin(self, pin):
     #     return self.hash_password(hashable=pin)

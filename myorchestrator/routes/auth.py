@@ -7,11 +7,12 @@ bp = Blueprint("auth", __name__)
 def query_contact(primary_contact):
     query = int(
         input(
-            "\n transaction number: Same as primary number? \n 1. Yes \n 2. No \n Response: "
+            "transaction number: Same as primary number? \n 1. Yes \n 2. No \n Response: "
         )
     )
 
     if query == 1:
+        print("Say less")
         return primary_contact
 
     elif query == 2:
@@ -45,7 +46,8 @@ def register_client():
 
     hash_en = HashAndEncrypt(valuables=valuables)
 
-    return hash_en.hash_email()
+    # hash_en.hash_email()
+    return hash_en.hash_password()
 
 
 @bp.route("/login")
