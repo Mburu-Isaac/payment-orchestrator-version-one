@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from argon2 import PasswordHasher
 import os
+from cryptography.fernet import Fernet
 
 # Database initializer
 db = SQLAlchemy()
@@ -15,5 +16,7 @@ ph = PasswordHasher(
     memory_cost=int(os.getenv("MEMORYCOST")),
     parallelism=int(os.getenv("PARALLELISM")),
     hash_len=int(os.getenv("HASHLEN")),
-    salt_len=int(os.getenv("SALTLEN"))
+    salt_len=int(os.getenv("SALTLEN")),
 )
+
+fernet = Fernet(key=os.getenv("FERNETKEY"))
