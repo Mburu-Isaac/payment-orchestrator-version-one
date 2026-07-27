@@ -11,10 +11,10 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30), nullable=False)
     national_id_number: Mapped[str] = mapped_column(
-        String(8), nullable=False, unique=True
+        String(255), nullable=False, unique=True
     )
     transactions_number: Mapped[str] = mapped_column(
-        String(20), nullable=False, unique=True
+        String(255), nullable=False, unique=True
     )
     email: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=True

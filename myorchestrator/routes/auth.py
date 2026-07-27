@@ -1,5 +1,6 @@
 from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
+from myorchestrator.models import User
 
 bp = Blueprint("auth", __name__)
 
@@ -33,6 +34,7 @@ def register_client():
     # password = input("create password: ")
     # recovery_pin = input("four digit pin for password recovery: ")
 
+    name = "mburu Isaac"
     valuables = {
         "email": "mburuisaac086@gmail.com", #email,
         "password": "@1234.", #password,
@@ -49,12 +51,22 @@ def register_client():
     hashed_email = hash_en.hash_email()
     hashed_password = hash_en.hash_password()
     enrypted_recovery_pin = hash_en.encrypt_pin()
+    encryptedid_number = hash_en.encrypt_national_number()
 
     enrypted_transactions_contact = hash_en.encrypt_transaction_contact()[0]
     encrypted_primary_contact = hash_en.encrypt_transaction_contact()[1]
 
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
+
+    client = User(
+        name=name,
+        national_id_number=encryptedid_number,
+        transaction_number=enrypted_transactions_contact,
+        email=hashed_email,
+        password=hashed_password,
+        recovery_pin=enrypted_recovery_pin
+    )
 
 
     return ""
@@ -64,6 +76,6 @@ def register_client():
 def login_client():
     pass
 
-from pprint import pprint
+# from pprint import pprint
 
-pprint(register_client())
+print(register_client())

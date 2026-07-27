@@ -48,4 +48,8 @@ class HashAndEncrypt:
 
     def encrypt_primary_contact(self, primary_contact):
         return fernet.encrypt(primary_contact.encode())
+
+    def encrypt_national_number(self):
+        national_number = self.encryptable.get("nationalNumber")
+        return fernet.encrypt(national_number.encode())
             
