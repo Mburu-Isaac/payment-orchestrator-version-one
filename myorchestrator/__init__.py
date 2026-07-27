@@ -20,5 +20,6 @@ def launch_app():
 
     login_manager.login_view = "auth/login"
     login_manager.login_message = "log in or sign up to view contents of this page"
+    login_manager.login_message_category = "info"
 
     return app
