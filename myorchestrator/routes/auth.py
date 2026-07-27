@@ -23,31 +23,32 @@ def query_contact(primary_contact):
 @bp.route("/signup")
 def register_client():
 
-    name = input("your name: ").title()
-    national_number = input("national ID number: ")
+    # name = input("your name: ").title()
+    # national_number = input("national ID number: ")
 
-    primary_number = input("primary phone number: ")
-    transaction_number = query_contact(primary_number)
+    # primary_number = input("primary phone number: ")
+    # transaction_number = query_contact(primary_number)
 
-    email = input("your email address: ")
-    password = input("create password: ")
-    recovery_pin = input("four digit pin for password recovery: ")
+    # email = input("your email address: ")
+    # password = input("create password: ")
+    # recovery_pin = input("four digit pin for password recovery: ")
 
     valuables = {
-        "email": email,
-        "password": password,
+        "email": "mburuisaac086@gmail.com", #email,
+        "password": "@1234.", #password,
         "toEncrypt": {
-            "nationalNumber": national_number,
-            "primaryNumber": primary_number,
-            "transactionNumber": transaction_number,
-            "recoveryPin": recovery_pin,
+            "nationalNumber": "12345678", #national_number,
+            "primaryNumber": "0112816337", #primary_number,
+            "transactionNumber": "0743277087", #transaction_number,
+            "recoveryPin": "2009" #recovery_pin,
         },
     }
 
     hash_en = HashAndEncrypt(valuables=valuables)
 
     # hash_en.hash_email()
-    return hash_en.hash_password()
+    # hash_en.hash_password()
+    return hash_en.encrypt_pin()
 
 
 @bp.route("/login")

@@ -1,11 +1,12 @@
 from hashlib import sha256
-from ...extensions import ph
+from ...extensions import ph, fernet
 
 
 class HashAndEncrypt:
 
     def __init__(self, valuables):
         self.valuable_data = valuables
+        self.encryptable = self.valuable_data.get("toEncrypt")
 
     def hash_email(self):
         email = self.valuable_data.get("email")
@@ -16,5 +17,7 @@ class HashAndEncrypt:
         password = self.valuable_data.get("password")
         return ph.hash(password)
 
-    # def encrypt_pin(self, pin):
-    #     return self.hash_password(hashable=pin)
+    def encrypt_pin(self):
+        pin = self.encryptable.get("recoveryPin")
+        encryption = fernet.encrypt(pin.encode())
+        return encryption
