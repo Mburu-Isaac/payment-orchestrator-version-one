@@ -52,4 +52,15 @@ class HashAndEncrypt:
     def encrypt_national_number(self):
         national_number = self.encryptable.get("nationalNumber")
         return fernet.encrypt(national_number.encode())
+
+    def generate_client_fingerprint(self):
+
+        nationalid_number = self.encryptable.get("nationalNumber")
+        transaction_number = self.encryptable.get("transactionNumber")
+        email = self.valuable_data.get("email")
+        primary_number = self.encryptable.get("primaryNumber")
+
+        client_identity = f"{nationalid_number}:{transaction_number}:{email}:{primary_number}"
+        client_fingerprint = sha256(client_identity.encode()).hexdigest()
+        return client_fingerprint
             

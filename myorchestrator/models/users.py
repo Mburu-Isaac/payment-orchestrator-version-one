@@ -25,6 +25,9 @@ class User(db.Model):
     recovery_pin: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=False
     )
+    client_fingerprint: Mapped[str] = mapped_column(
+        String(255), nullable=False, unique=True
+    )
 
 @login_manager.user_loader
 def load_user(user_id):

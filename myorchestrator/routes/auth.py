@@ -56,20 +56,22 @@ def register_client():
     enrypted_transactions_contact = hash_en.encrypt_transaction_contact()[0]
     encrypted_primary_contact = hash_en.encrypt_transaction_contact()[1]
 
+    client_fingerprint = hash_en.generate_client_fingerprint()
+
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-    client = User(
-        name=name,
-        national_id_number=encryptedid_number,
-        transaction_number=enrypted_transactions_contact,
-        email=hashed_email,
-        password=hashed_password,
-        recovery_pin=enrypted_recovery_pin
-    )
+    # client = User(
+    #     name=name,
+    #     national_id_number=encryptedid_number,
+    #     transaction_number=enrypted_transactions_contact,
+    #     email=hashed_email,
+    #     password=hashed_password,
+    #     recovery_pin=enrypted_recovery_pin
+    # )
 
 
-    return ""
+    return client_fingerprint
 
 
 @bp.route("/login")
