@@ -28,14 +28,14 @@ class HashAndEncrypt:
         recovpin_encryption = fernet.encrypt(pin.encode())
         return recovpin_encryption
 
-    def encrypt_transaction_contact(self):
+    def encrypt_transaction_contact(self) -> tuple:
 
         primary_number = self.encryptable.get("primaryNumber")
 
         if self.single_contact == True:
             contact = primary_number
             contact_encryption = fernet.encrypt(contact.encode())
-            return contact_encryption
+            return contact_encryption, None
         else:
             contact = self.encryptable.get("transactionNumber")
             transactions_encryption = fernet.encrypt(contact.encode())

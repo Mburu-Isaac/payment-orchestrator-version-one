@@ -46,10 +46,18 @@ def register_client():
 
     hash_en = HashAndEncrypt(valuables=valuables)
 
-    # hash_en.hash_email()
-    # hash_en.hash_password()
-    # hash_en.encrypt_pin()
-    return hash_en.encrypt_transaction_contact()
+    hashed_email = hash_en.hash_email()
+    hashed_password = hash_en.hash_password()
+    enrypted_recovery_pin = hash_en.encrypt_pin()
+
+    enrypted_transactions_contact = hash_en.encrypt_transaction_contact()[0]
+    encrypted_primary_contact = hash_en.encrypt_transaction_contact()[1]
+
+    if encrypted_primary_contact is None:
+        encrypted_primary_contact = enrypted_transactions_contact
+
+
+    return ""
 
 
 @bp.route("/login")
