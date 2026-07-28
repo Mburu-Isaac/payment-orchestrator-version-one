@@ -61,14 +61,15 @@ def register_client():
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-    # client = User(
-    #     name=name,
-    #     national_id_number=encryptedid_number,
-    #     transaction_number=enrypted_transactions_contact,
-    #     email=hashed_email,
-    #     password=hashed_password,
-    #     recovery_pin=enrypted_recovery_pin
-    # )
+    client = User(
+        name=name,
+        national_id_number=encryptedid_number,
+        transaction_number=enrypted_transactions_contact,
+        email=hashed_email,
+        password=hashed_password,
+        recovery_pin=enrypted_recovery_pin,
+        client_fingerprint=client_fingerprint
+    )
 
 
     return client_fingerprint
