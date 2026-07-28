@@ -29,7 +29,7 @@ class User(db.Model):
 
     client_password_history = db.relationship(
         "ClientPasswordHistory",
-        backref="client_pass",
+        backref="client",
         lazy=True,
         cascade="all, delete-orphan"
     )

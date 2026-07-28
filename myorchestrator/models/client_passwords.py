@@ -9,6 +9,6 @@ class ClientPasswordHistory(db.Model):
     __tablename__ = "client_passwords"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user_id: Mapped[int] = mapped_column(ForeignKey("client.id"), nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
     logged_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow())

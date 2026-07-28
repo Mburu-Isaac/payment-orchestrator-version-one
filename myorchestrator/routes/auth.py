@@ -1,6 +1,6 @@
 from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
-from myorchestrator.models import User
+from myorchestrator.models import User, ClientPasswordHistory
 
 bp = Blueprint("auth", __name__)
 
@@ -71,8 +71,13 @@ def register_client():
         client_fingerprint=client_fingerprint
     )
 
+    client_password_history = ClientPasswordHistory(
+        client=client,
+        password=hashed_password
+    )
 
-    return client_fingerprint
+
+    return client_password_history
 
 
 @bp.route("/login")
