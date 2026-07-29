@@ -63,4 +63,7 @@ class HashAndEncrypt:
         client_identity = f"{nationalid_number}:{transaction_number}:{email}:{primary_number}"
         client_fingerprint = sha256(client_identity.encode()).hexdigest()
         return client_fingerprint
+
+    def hash_client_otp(self, otp):
+        pass
             
