@@ -1,6 +1,6 @@
 from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
-from myorchestrator.models import User, ClientPasswordHistory
+# from myorchestrator.models import User, ClientPasswordHistory
 
 bp = Blueprint("auth", __name__)
 
@@ -61,29 +61,46 @@ def register_client():
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-    client = User(
-        name=name,
-        national_id_number=encryptedid_number,
-        transaction_number=enrypted_transactions_contact,
-        email=hashed_email,
-        password=hashed_password,
-        recovery_pin=enrypted_recovery_pin,
-        client_fingerprint=client_fingerprint
-    )
+    client_object = {
+        "name": name,
+        "national_id_number": encryptedid_number,
+        "transaction_number": enrypted_transactions_contact,
+        "email": hashed_email,
+        "password": hashed_password,
+        "recovery_pin": enrypted_recovery_pin,
+        "client_fingerprint": client_fingerprint
+    }
 
-    client_password_history = ClientPasswordHistory(
-        client=client,
-        password=hashed_password
-    )
+    client_password_history_object = {
+        "client": client_object,
+        "password": hashed_password
+    }
+
+    return client_password_history_object
+
+    # client = User(
+    #     name=name,
+    #     national_id_number=encryptedid_number,
+    #     transaction_number=enrypted_transactions_contact,
+    #     email=hashed_email,
+    #     password=hashed_password,
+    #     recovery_pin=enrypted_recovery_pin,
+    #     client_fingerprint=client_fingerprint
+    # )
+
+    # client_password_history = ClientPasswordHistory(
+    #     client=client,
+    #     password=hashed_password
+    # )
 
 
-    return client_password_history
+    # return 
 
 
 @bp.route("/login")
 def login_client():
     pass
 
-# from pprint import pprint
+from pprint import pprint
 
-print(register_client())
+pprint(register_client())
