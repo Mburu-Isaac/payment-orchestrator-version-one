@@ -34,6 +34,13 @@ class User(db.Model):
         cascade="all, delete-orphan"
     )
 
+    client_otp = db.relationship(
+        "ClientOTP",
+        backref="client",
+        lazy="True",
+        cascade="all, delete-orphan"
+    )
+
 
 @login_manager.user_loader
 def load_user(user_id):
