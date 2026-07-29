@@ -1,8 +1,10 @@
 from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
-# from myorchestrator.models import User, ClientPasswordHistory
+from myorchestrator.models import User, ClientPasswordHistory, ClientOTP
+from myorchestrator.utilities.toolbox import ToolBox
 
 bp = Blueprint("auth", __name__)
+tb = ToolBox()
 
 
 def query_contact(primary_contact):
@@ -76,7 +78,16 @@ def register_client():
         "password": hashed_password
     }
 
-    return client_password_history_object
+    registration_otp = tb.generate_systems_otp()
+
+    client_registration_otp = ClientOTP(
+        otp="",
+        otp_type="registration",
+        expires_at="",
+        created_at=""
+    )
+
+    return client_registration_otp
 
     # client = User(
     #     name=name,
@@ -99,8 +110,8 @@ def register_client():
 
 @bp.route("/login")
 def login_client():
-    pass
+    return tb.generate_systems_otp()
 
-from pprint import pprint
+# from pprint import pprint
 
-pprint(register_client())
+print(register_client())

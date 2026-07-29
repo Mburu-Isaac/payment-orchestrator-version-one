@@ -14,5 +14,3 @@ class ToolBox:
         return otp
 
 
-tb = ToolBox()
-print(tb.generate_systems_otp())
