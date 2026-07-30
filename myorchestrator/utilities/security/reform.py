@@ -67,4 +67,7 @@ class HashAndEncrypt:
     def hash_client_otp(self, otp):
         hashed_otp = ph.hash(otp)
         return hashed_otp
+
+    def decrypt_recovery_pin(self, pin):
+        pass
             
