@@ -2,6 +2,7 @@ from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
 from myorchestrator.models import Client, ClientPasswordHistory, ClientOTP
 from myorchestrator.utilities.toolbox import ToolBox
+from myorchestrator.email_service import EmailHandler
 
 bp = Blueprint("auth", __name__)
 tb = ToolBox()
@@ -49,6 +50,9 @@ def register_client():
             "recoveryPin": "2009",  # recovery_pin,
         },
     }
+
+    eh = EmailHandler(receiver_email=valuables.get("email"))
+
 
     # -- Registration - Hash and Encrypt collected data -
 
@@ -101,7 +105,7 @@ def register_client():
         "created_at": generated_at,
     }
 
-    return client_object, client_password_history_object, client_registration_otp_object
+    return eh.receiver_email
 
     # Write Database Objects: write Client object
 
@@ -140,6 +144,6 @@ def login_client():
     return tb.generate_systems_otp()
 
 
-from pprint import pprint
+# from pprint import pprint
 
-pprint(register_client())
+print(register_client())
