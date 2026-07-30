@@ -70,4 +70,7 @@ class HashAndEncrypt:
 
     def decrypt_recovery_pin(self, pin):
         pass
+
+    def decrypt_phone_numbers(self, phone_number):
+        pass
             
