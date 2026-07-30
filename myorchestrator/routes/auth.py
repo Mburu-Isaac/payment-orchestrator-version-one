@@ -1,6 +1,6 @@
 from flask import Blueprint
 from myorchestrator.utilities.security.reform import HashAndEncrypt
-from myorchestrator.models import User, ClientPasswordHistory, ClientOTP
+from myorchestrator.models import Client, ClientPasswordHistory, ClientOTP
 from myorchestrator.utilities.toolbox import ToolBox
 
 bp = Blueprint("auth", __name__)
@@ -26,6 +26,8 @@ def query_contact(primary_contact):
 @bp.route("/signup")
 def register_client():
 
+    # -- Registration: collect client data -
+
     # name = input("your name: ").title()
     # national_number = input("national ID number: ")
 
@@ -48,6 +50,8 @@ def register_client():
         },
     }
 
+    # -- Registration - Hash and Encrypt collected data -
+
     hash_en = HashAndEncrypt(valuables=valuables)
 
     hashed_email = hash_en.hash_email()
@@ -58,14 +62,19 @@ def register_client():
     enrypted_transactions_contact = hash_en.encrypt_transaction_contact()[0]
     encrypted_primary_contact = hash_en.encrypt_transaction_contact()[1]
 
+    # -- Hash and Encrypt collected data: generate client fingerprint -
+
     client_fingerprint = hash_en.generate_client_fingerprint()
 
+    # -- Hash and Encrypt collected data: set transaction's contact to store -
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
+    # Registration - write database objects
     client_object = {
         "name": name,
         "national_id_number": encryptedid_number,
+        "primary_number": encrypted_primary_contact,
         "transaction_number": enrypted_transactions_contact,
         "email": hashed_email,
         "password": hashed_password,
@@ -85,28 +94,42 @@ def register_client():
 
     hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
 
-    client_registration_otp = ClientOTP(
-        otp=hashed_client_otp,
-        otp_type="registration",
-        expires_at=expires_at,
-        created_at=generated_at
-    )
+    client_registration_otp_object = {
+        "otp": hashed_client_otp,
+        "otp_type": "registration",
+        "expires_at": expires_at,
+        "created_at": generated_at,
+    }
 
-    return client_registration_otp
+    return client_object, client_password_history_object, client_registration_otp_object
 
-    # client = User(
+    # Write Database Objects: write Client object
+
+    # client = Client(
     #     name=name,
     #     national_id_number=encryptedid_number,
-    #     transaction_number=enrypted_transactions_contact,
+    #     primary_number=encrypted_primary_contact,
+    #     transactions_number=enrypted_transactions_contact,
     #     email=hashed_email,
     #     password=hashed_password,
     #     recovery_pin=enrypted_recovery_pin,
     #     client_fingerprint=client_fingerprint
     # )
 
+    # Write Database Objects: write ClientPasswordHistory object
+
     # client_password_history = ClientPasswordHistory(
     #     client=client,
     #     password=hashed_password
+    # )
+
+    # Write Database Objects: write ClientOTP object
+
+    # client_registration_otp = ClientOTP(
+    #     otp=hashed_client_otp,
+    #     otp_type="registration",
+    #     expires_at=expires_at,
+    #     created_at=generated_at
     # )
 
     # return

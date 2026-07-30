@@ -5,7 +5,7 @@ from myorchestrator.extensions import login_manager
 from datetime import datetime, timezone
 
 
-class User(db.Model):
+class Client(db.Model):
 
     __tablename__ = "clients"
 
@@ -14,8 +14,11 @@ class User(db.Model):
     national_id_number: Mapped[str] = mapped_column(
         String(255), nullable=False, unique=True
     )
+    primary_number: Mapped[str] = mapped_column(
+        String(255), nullable=False
+    )
     transactions_number: Mapped[str] = mapped_column(
-        String(255), nullable=False, unique=True
+        String(255), nullable=False
     )
     email: Mapped[str] = mapped_column(String(255), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(255), nullable=False, unique=False)
@@ -44,4 +47,4 @@ class User(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return db.session.get(User, int(user_id))
+    return db.session.get(Client, int(user_id))
