@@ -38,13 +38,13 @@ def register_client():
 
     name = "mburu Isaac"
     valuables = {
-        "email": "mburuisaac086@gmail.com", #email,
-        "password": "@1234.", #password,
+        "email": "mburuisaac086@gmail.com",  # email,
+        "password": "@1234.",  # password,
         "toEncrypt": {
-            "nationalNumber": "12345678", #national_number,
-            "primaryNumber": "0112816337", #primary_number,
-            "transactionNumber": "0743277087", #transaction_number,
-            "recoveryPin": "2009" #recovery_pin,
+            "nationalNumber": "12345678",  # national_number,
+            "primaryNumber": "0112816337",  # primary_number,
+            "transactionNumber": "0743277087",  # transaction_number,
+            "recoveryPin": "2009",  # recovery_pin,
         },
     }
 
@@ -70,24 +70,26 @@ def register_client():
         "email": hashed_email,
         "password": hashed_password,
         "recovery_pin": enrypted_recovery_pin,
-        "client_fingerprint": client_fingerprint
+        "client_fingerprint": client_fingerprint,
     }
 
     client_password_history_object = {
         "client": client_object,
-        "password": hashed_password
+        "password": hashed_password,
     }
 
     registration_otp = tb.generate_systems_otp()
 
-    client_registration_otp = ClientOTP(
-        otp="",
-        otp_type="registration",
-        expires_at="",
-        created_at=""
-    )
+    hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
 
-    return client_registration_otp
+    # client_registration_otp = ClientOTP(
+    #     otp="",
+    #     otp_type="registration",
+    #     expires_at="",
+    #     created_at=""
+    # )
+
+    return hashed_client_otp
 
     # client = User(
     #     name=name,
@@ -104,13 +106,13 @@ def register_client():
     #     password=hashed_password
     # )
 
-
-    # return 
+    # return
 
 
 @bp.route("/login")
 def login_client():
     return tb.generate_systems_otp()
+
 
 # from pprint import pprint
 

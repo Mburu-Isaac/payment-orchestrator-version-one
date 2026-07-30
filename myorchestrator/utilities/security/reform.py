@@ -65,5 +65,6 @@ class HashAndEncrypt:
         return client_fingerprint
 
     def hash_client_otp(self, otp):
-        pass
+        hashed_otp = ph.hash(otp)
+        return hashed_otp
             

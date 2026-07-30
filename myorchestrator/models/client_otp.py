@@ -1,4 +1,4 @@
-from orchestrator.extensions import db
+from myorchestrator.extensions import db
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey, String, DateTime
 from datetime import datetime, timezone
