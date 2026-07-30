@@ -14,4 +14,4 @@ class ClientOTP(db.Model):
     otp: Mapped[str] = mapped_column(String(255), nullable=False)
     otp_type: Mapped[str] = mapped_column(String(30), nullable=False, default="login")
     expires_at: Mapped [DateTime] = mapped_column(DateTime(timezone=True))
-    created_at: Mapped [DateTime] = mapped_column(DateTime, default=datetime.now(timezone.utc))
+    created_at: Mapped [DateTime] = mapped_column(DateTime(timezone=True))

@@ -78,18 +78,21 @@ def register_client():
         "password": hashed_password,
     }
 
-    registration_otp = tb.generate_systems_otp()
+    otp_tuple = tb.generate_systems_otp()
+    registration_otp = otp_tuple[0]
+    generated_at = otp_tuple[1]
+    expires_at = otp_tuple[2]
 
     hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
 
-    # client_registration_otp = ClientOTP(
-    #     otp="",
-    #     otp_type="registration",
-    #     expires_at="",
-    #     created_at=""
-    # )
+    client_registration_otp = ClientOTP(
+        otp=hashed_client_otp,
+        otp_type="registration",
+        expires_at=expires_at,
+        created_at=generated_at
+    )
 
-    return hashed_client_otp
+    return client_registration_otp
 
     # client = User(
     #     name=name,
@@ -114,6 +117,6 @@ def login_client():
     return tb.generate_systems_otp()
 
 
-# from pprint import pprint
+from pprint import pprint
 
-print(register_client())
+pprint(register_client())
