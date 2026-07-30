@@ -73,4 +73,8 @@ class HashAndEncrypt:
 
     def decrypt_phone_numbers(self, phone_number):
         pass
-            
+
+    def decryptid_number(self, idnumber):
+        pass
+
+    
