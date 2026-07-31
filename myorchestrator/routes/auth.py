@@ -115,34 +115,34 @@ def register_client():
 
     # Write Database Objects: write Client object
 
-    # client = Client(
-    #     name=name,
-    #     national_id_number=encryptedid_number,
-    #     primary_number=encrypted_primary_contact,
-    #     transactions_number=enrypted_transactions_contact,
-    #     email=hashed_email,
-    #     password=hashed_password,
-    #     recovery_pin=enrypted_recovery_pin,
-    #     client_fingerprint=client_fingerprint
-    # )
+    client = Client(
+        name=name,
+        national_id_number=encryptedid_number,
+        primary_number=encrypted_primary_contact,
+        transactions_number=enrypted_transactions_contact,
+        email=hashed_email,
+        password=hashed_password,
+        recovery_pin=enrypted_recovery_pin,
+        client_fingerprint=client_fingerprint
+    )
 
     # Write Database Objects: write ClientPasswordHistory object
 
-    # client_password_history = ClientPasswordHistory(
-    #     client=client,
-    #     password=hashed_password
-    # )
+    client_password_history = ClientPasswordHistory(
+        client=client,
+        password=hashed_password
+    )
 
     # Write Database Objects: write ClientOTP object
 
-    # client_registration_otp = ClientOTP(
-    #     otp=hashed_client_otp,
-    #     otp_type="registration",
-    #     expires_at=expires_at,
-    #     created_at=generated_at
-    # )
+    client_registration_otp = ClientOTP(
+        otp=hashed_client_otp,
+        otp_type="registration",
+        expires_at=expires_at,
+        created_at=generated_at
+    )
 
-    # return
+    return ""
 
 
 @bp.route("/login")
