@@ -19,25 +19,20 @@ class ToolBox:
         return otp, generated_at, expires_at
 
     def create(self, data: list) -> bool:
-        
-        if len(data) == 1:
-            return data[0]
-        else:
-            return 'list length greater than one'
 
-        # try:
-        #     if len(data) == 1:
-        #         db.session.add(data[0])
-        #     else:
-        #         db.session.add_all(data)
+        try:
+            if len(data) == 1:
+                db.session.add(data[0])
+                db.session.flush()
+            else:
+                db.session.add_all(data)
 
-        #     db.session.commi()
-        #     return True
+            db.session.commit()
+            return True
 
-        # except Exception:
-        #     db.session.rollback()
-        #     raise
-        #     return False
+        except Exception:
+            db.session.rollback()
+            raise
 
 
 

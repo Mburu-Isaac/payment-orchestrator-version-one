@@ -104,6 +104,8 @@ def register_client():
         client_fingerprint=client_fingerprint
     )
 
+    create_parent = tb.create(data=[client])
+
     # Write Database Objects: write ClientPasswordHistory object
 
     client_password_history = ClientPasswordHistory(
@@ -114,28 +116,22 @@ def register_client():
     # Write Database Objects: write ClientOTP object
 
     client_registration_otp = ClientOTP(
+        client=client,
         otp=hashed_client_otp,
         otp_type="registration",
         expires_at=expires_at,
         created_at=generated_at
     )
 
-    # creation = tb.create(
-    #     data=[client, client_password_history, client_registration_otp]
-    # )
+    if create_parent:
+        create_child = tb.create(
+            data=[client_password_history, client_registration_otp]
+        )
 
-    creation = tb.create(
-        data=["Isaac", "Mburu"]
-    )
-
-    return creation
+        return create_child
 
 
 @bp.route("/login")
 def login_client():
     return tb.generate_systems_otp()
 
-
-# from pprint import pprint
-
-print(register_client())

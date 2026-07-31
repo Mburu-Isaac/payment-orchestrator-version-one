@@ -47,12 +47,18 @@
 # fernet_key = Fernet.generate_key()
 # print(fernet_key.decode())
 
-# from myorchestrator.extensions import db
-# from myorchestrator import launch_orchestrator
-
-# orchestrator = launch_orchestrator()
-# with orchestrator.app_context():
-#     db.create_all()
+from myorchestrator.extensions import db
+from myorchestrator import launch_orchestrator
+from myorchestrator.routes.auth import register_client
 
 
-# print("tables created")
+orchestrator = launch_orchestrator()
+with orchestrator.app_context():
+    # db.create_all()
+    print(register_client())
+
+
+print("data stored successfully")
+
+
+
