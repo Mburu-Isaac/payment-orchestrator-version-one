@@ -14,8 +14,8 @@ class EmailHandler:
     ):
         self.smtp_host = os.environ.get("SMTP_HOST")
         self.smtp_port = int(os.environ.get("SMTP_PORT"))
-        self.sender_name = "ETERNITY"
-        self.sender_email = os.environ.get("COMPANY_EMAIL")
+        self.brand_name = os.envirion.get("BRAND_NAME")
+        self.company_email = os.environ.get("COMPANY_EMAIL")
         self.smtp_password = os.environ.get("EMAIL_PASSWORD")
 
         template_path = Path(__file__).parent/templates_dir
@@ -49,7 +49,7 @@ class EmailHandler:
     ):
         
         email = EmailMessage()
-        email["from"] = f"{self.sender_name} <{self.sender_email}>"
+        email["from"] = f"{self.brand_name} <{self.company_email}>"
         email["to"] = to_email
         email["Subject"] = subject
         email.set_content(body)
@@ -118,9 +118,23 @@ class EmailHandler:
         unhashed_otp = ""
         expires_at = otp_object.get("expires_at")
 
+        message = """ 
+            Dear Client, 
+
+            please use the following one time password to verify
+            your email address:
+
+                        OTP: " "
+
+            if you did not request the OTP please ignore this email
+
+            regards,
+            " "
+        """
+
         email_context = {
             "otp":f"{hashed_otp} - unhashable to {unhashed_otp}",
-            "sender_name":self.sender_name,
+            "sender_name":self.brand_name,
             "expires_at":expires_at.strftime("%H:%M")
         }
 
