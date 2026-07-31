@@ -20,7 +20,10 @@ class ToolBox:
 
     def create(self, data: list) -> bool:
         
-        return len(data)
+        if len(data) == 1:
+            return data[0]
+        else:
+            return 'list length greater than one'
 
         # try:
         #     if len(data) == 1:

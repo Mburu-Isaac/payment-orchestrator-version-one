@@ -120,8 +120,12 @@ def register_client():
         created_at=generated_at
     )
 
+    # creation = tb.create(
+    #     data=[client, client_password_history, client_registration_otp]
+    # )
+
     creation = tb.create(
-        data=[client, client_password_history, client_registration_otp]
+        data=["Isaac", "Mburu"]
     )
 
     return creation
