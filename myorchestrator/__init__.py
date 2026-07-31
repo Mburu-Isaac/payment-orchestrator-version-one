@@ -3,7 +3,7 @@ from flask import Flask
 from .extensions import db, login_manager
 
 
-def launch_app():
+def launch_orchestrator():
 
     app = Flask(__name__)
 

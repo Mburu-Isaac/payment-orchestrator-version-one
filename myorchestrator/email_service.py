@@ -14,7 +14,7 @@ class EmailHandler:
     ):
         self.smtp_host = os.environ.get("SMTP_HOST")
         self.smtp_port = int(os.environ.get("SMTP_PORT"))
-        self.brand_name = os.envirion.get("BRAND_NAME")
+        self.brand_name = os.environ.get("BRAND_NAME")
         self.company_email = os.environ.get("COMPANY_EMAIL")
         self.smtp_password = os.environ.get("EMAIL_PASSWORD")
 

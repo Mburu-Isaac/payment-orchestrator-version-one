@@ -46,3 +46,13 @@
 
 # fernet_key = Fernet.generate_key()
 # print(fernet_key.decode())
+
+from myorchestrator.extensions import db
+from myorchestrator import launch_orchestrator
+
+orchestrator = launch_orchestrator()
+with orchestrator.app_context():
+    db.create_all()
+
+
+print("tables created")

@@ -150,6 +150,3 @@ def login_client():
     return tb.generate_systems_otp()
 
 
-from pprint import pprint
-
-pprint(register_client())
