@@ -17,6 +17,13 @@ class ToolBox:
         expires_at = generated_at + timedelta(minutes=5)
         return otp, generated_at, expires_at
 
+    def database_create_engine(self, data: list) -> bool:
+
+        try:
+            return ""
+        except Exception:
+            return ""
+
 
 
 
