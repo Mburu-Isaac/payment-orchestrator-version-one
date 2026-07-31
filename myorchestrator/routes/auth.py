@@ -107,11 +107,11 @@ def register_client():
     # Registration - Handle Registration OTP
 
     # 1: Send OTP via client email
-    send_otp = eh.send_otp(
-        otp_object=client_registration_otp_object
-    )
+    # send_otp = eh.send_otp(
+    #     otp_object=client_registration_otp_object
+    # )
 
-    return send_otp
+    # return send_otp
 
     # Write Database Objects: write Client object
 
