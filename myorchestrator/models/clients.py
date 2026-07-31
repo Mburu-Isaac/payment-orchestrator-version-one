@@ -1,6 +1,6 @@
 from ..extensions import db
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, DateTime
+from sqlalchemy import String, DateTime, Boolean
 from myorchestrator.extensions import login_manager
 from datetime import datetime, timezone
 
@@ -28,6 +28,9 @@ class Client(db.Model):
     )
     joined_at: Mapped[datetime] = mapped_column(
         DateTime, default=datetime.now(timezone.utc)
+    )
+    verified: Mapped[bool] = mapped_column(
+        Boolean, default=False
     )
 
     client_password_history = db.relationship(
