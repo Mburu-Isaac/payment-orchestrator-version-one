@@ -1,6 +1,7 @@
 import secrets
 import os
 from datetime import datetime, timezone, timedelta
+from myorchestrator.extensions import db
 
 
 
@@ -17,12 +18,23 @@ class ToolBox:
         expires_at = generated_at + timedelta(minutes=5)
         return otp, generated_at, expires_at
 
-    def database_create_engine(self, data: list) -> bool:
+    def create(self, data: list) -> bool:
+        
+        return len(data)
 
-        try:
-            return ""
-        except Exception:
-            return ""
+        # try:
+        #     if len(data) == 1:
+        #         db.session.add(data[0])
+        #     else:
+        #         db.session.add_all(data)
+
+        #     db.session.commi()
+        #     return True
+
+        # except Exception:
+        #     db.session.rollback()
+        #     raise
+        #     return False
 
 
 

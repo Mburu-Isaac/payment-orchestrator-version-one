@@ -43,7 +43,7 @@ class Client(db.Model):
     client_otp = db.relationship(
         "ClientOTP",
         backref="client",
-        lazy="True",
+        lazy=True,
         cascade="all, delete-orphan"
     )
 

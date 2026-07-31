@@ -73,40 +73,18 @@ def register_client():
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-    # Registration - write database objects
-    client_object = {
-        "name": name,
-        "national_id_number": encryptedid_number,
-        "primary_number": encrypted_primary_contact,
-        "transaction_number": enrypted_transactions_contact,
-        "email": hashed_email,
-        "password": hashed_password,
-        "recovery_pin": enrypted_recovery_pin,
-        "client_fingerprint": client_fingerprint,
-    }
 
-    client_password_history_object = {
-        "client": client_object,
-        "password": hashed_password,
-    }
-
+    # Registration - Registration OTP
+    # 1: Generate OTP
     otp_tuple = tb.generate_systems_otp()
     registration_otp = otp_tuple[0]
     generated_at = otp_tuple[1]
     expires_at = otp_tuple[2]
 
+    # 2: Hash OTP
     hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
 
-    client_registration_otp_object = {
-        "otp": hashed_client_otp,
-        "otp_type": "registration",
-        "expires_at": expires_at,
-        "created_at": generated_at,
-    }
-
-    # Registration - Handle Registration OTP
-
-    # 1: Send OTP via client email
+    # 3: Send OTP to client email
     # send_otp = eh.send_otp(
     #     otp_object=client_registration_otp_object
     # )
@@ -142,7 +120,11 @@ def register_client():
         created_at=generated_at
     )
 
-    return ""
+    creation = tb.create(
+        data=[client, client_password_history, client_registration_otp]
+    )
+
+    return creation
 
 
 @bp.route("/login")
@@ -150,3 +132,6 @@ def login_client():
     return tb.generate_systems_otp()
 
 
+# from pprint import pprint
+
+print(register_client())
