@@ -27,55 +27,60 @@ class EmailHandler:
         )
         self.receiver_email = receiver_email
     
+    def _render_template(
+        self,
+        template_name,
+    ):
+        # context.setdefault("year", datetime.now().year)
 
-    # def _render_template(
-    #     self,
-    #     template_name,
-    #     context
-    # ):
-    #     # context.setdefault("year", datetime.now().year)
-    #     template = self.jinja_environment.get_template(template_name)
-    #     return template.render(context)
+        context = {
 
-    # def _generate_message(
-    #     self,
-    #     to_email,
-    #     subject,
-    #     html_body,
-    #     body
-    # ):
+        }
+
+        template = self.jinja_environment.get_template(template_name)
+        return template.render(context)
+
+    def _generate_message(
+        self,
+        to_email,
+        subject,
+        html_body,
+        body
+    ):
         
-    #     email = EmailMessage()
-    #     email["from"] = f"{self.sender_name} <{self.sender_email}>"
-    #     email["to"] = to_email
-    #     email["Subject"] = subject
-    #     email.set_content(body)
-    #     email.add_alternative(html_body, subtype="html")
+        email = EmailMessage()
+        email["from"] = f"{self.sender_name} <{self.sender_email}>"
+        email["to"] = to_email
+        email["Subject"] = subject
+        email.set_content(body)
+        email.add_alternative(html_body, subtype="html")
 
-    #     return email
+        return email
 
-    # def send_email(
-    #     self,
-    #     to_email,
-    #     subject, 
-    #     template_name,
-    #     context,
-    #     body
-    # ):
+    def send_email(
+        self,
+        to_email,
+        subject, 
+        template_name,
+        context,
+        body
+    ):
         
-    #     #render template
-    #     html_template = self._render_template(
-    #         template_name=template_name,
-    #         context=context
-    #     )
+        #render template
+        html_template = self._render_template(
+            template_name=template_name,
+            context=context
+        )
 
-    #     #create message
-    #     email_message = self._generate_message(
-    #         to_email=to_email,
-    #         subject=subject,
-    #         html_body=html_template,
-    #         body=body
-    #     )
+        #create message
+        email_message = self._generate_message(
+            to_email=to_email,
+            subject=subject,
+            html_body=html_template,
+            body=body
+        )
+
+        return email_message
 
     #     #send email
     #     try:
@@ -105,27 +110,33 @@ class EmailHandler:
     #         print(f"Email forwarding failed: {error}")
     #         return False
 
-    # def send_otp(self):
+    def send_otp(self, otp_object):
 
-    #     otp, expires_at, message, subject = self.draft._draft_otp()
+        # otp, expires_at, message, subject = self.draft._draft_otp()
 
-    #     email_context = {
-    #         "otp":otp,
-    #         "sender_name":self.sender_name,
-    #         "expires_at":expires_at.strftime("%H:%M")
-    #     }
+        hashed_otp = otp_object.get("otp")
+        unhashed_otp = ""
+        expires_at = otp_object.get("expires_at")
+
+        email_context = {
+            "otp":f"{hashed_otp} - unhashable to {unhashed_otp}",
+            "sender_name":self.sender_name,
+            "expires_at":expires_at.strftime("%H:%M")
+        }
+
+        return email_context
         
-    #     self.send_email(
-    #         to_email=self.receiver_email,
-    #         subject=subject,
-    #         template_name="emails/otp.html",
-    #         context=email_context,
-    #         body=message
-    #     )
+        # self.send_email(
+        #     to_email=self.receiver_email,
+        #     subject=subject,
+        #     template_name="emails/otp.html",
+        #     context=email_context,
+        #     body=message
+        # )
 
-    #     return {
-    #         "success": True,
-    #         "otp": otp,
-    #         "message":"OTP sent successfully"
-    #     }
+        # return {
+        #     "success": True,
+        #     "otp": otp,
+        #     "message":"OTP sent successfully"
+        # }
 

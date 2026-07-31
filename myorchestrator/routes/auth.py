@@ -53,7 +53,6 @@ def register_client():
 
     eh = EmailHandler(receiver_email=valuables.get("email"))
 
-
     # -- Registration - Hash and Encrypt collected data -
 
     hash_en = HashAndEncrypt(valuables=valuables)
@@ -105,7 +104,14 @@ def register_client():
         "created_at": generated_at,
     }
 
-    return eh.receiver_email
+    # Registration - Handle Registration OTP
+
+    # 1: Send OTP via client email
+    send_otp = eh.send_otp(
+        otp_object=client_registration_otp_object
+    )
+
+    return send_otp
 
     # Write Database Objects: write Client object
 
@@ -144,6 +150,6 @@ def login_client():
     return tb.generate_systems_otp()
 
 
-# from pprint import pprint
+from pprint import pprint
 
-print(register_client())
+pprint(register_client())
