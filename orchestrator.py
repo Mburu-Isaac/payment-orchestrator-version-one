@@ -49,16 +49,16 @@
 
 from myorchestrator.extensions import db
 from myorchestrator import launch_orchestrator
-from myorchestrator.routes.auth import register_client
+from myorchestrator.routes.auth import register_client, login_client
 
 
 orchestrator = launch_orchestrator()
 with orchestrator.app_context():
-    db.create_all()
-    print(register_client())
+    # db.create_all()
+    print(login_client())
 
 
-print("data stored successfully")
+# print("data stored successfully")
 # print("tables created")
 
 

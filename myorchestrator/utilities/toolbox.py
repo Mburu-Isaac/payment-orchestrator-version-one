@@ -2,6 +2,7 @@ import secrets
 import os
 from datetime import datetime, timezone, timedelta
 from myorchestrator.extensions import db
+from sqlalchemy import text
 
 
 
@@ -36,7 +37,8 @@ class ToolBox:
 
     def conditional_read(
         self,
-        model_name,
+        table_name,
+        field,
         intended_value,
         multiple_value_return=False
     ):
@@ -45,22 +47,23 @@ class ToolBox:
         if not multiple_value_return:
             
             return_object = db.session.execute(
-                db.select(model_name).where(
-                    model_name.field == intended_value
-                )
-            ).scalar()
+                text(f"SELECT * FROM {table_name} WHERE {field} = :value"),
+                {"value": intended_value}
+            )
 
-            return return_object
+            object_data = return_object.fetchone()
+
+            return object_data
 
         else:
 
             return_object = db.session.execute(
-                db.select(model_name).where(
-                    model_name.field == intended_value
-                )
-            ).scalar()
+                text(f"SELECT * FROM {table_name} WHERE {field} = :value"),
+                {"value": intended_value}
+            )
 
-            return return_object
+            object_data = return_object.fetchall()
+            return object_data
 
 
 

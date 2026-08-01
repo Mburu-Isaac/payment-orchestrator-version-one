@@ -73,7 +73,6 @@ def register_client():
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-
     # Registration - Registration OTP
     # 1: Generate OTP
     otp_tuple = tb.generate_systems_otp()
@@ -101,7 +100,7 @@ def register_client():
         email=hashed_email,
         password=hashed_password,
         recovery_pin=enrypted_recovery_pin,
-        client_fingerprint=client_fingerprint
+        client_fingerprint=client_fingerprint,
     )
 
     create_parent = tb.create(data=[client])
@@ -109,8 +108,7 @@ def register_client():
     # Write Database Objects: write ClientPasswordHistory object
 
     client_password_history = ClientPasswordHistory(
-        client=client,
-        password=hashed_password
+        client=client, password=hashed_password
     )
 
     # Write Database Objects: write ClientOTP object
@@ -120,7 +118,7 @@ def register_client():
         otp=hashed_client_otp,
         otp_type="registration",
         expires_at=expires_at,
-        created_at=generated_at
+        created_at=generated_at,
     )
 
     if create_parent:
@@ -133,5 +131,14 @@ def register_client():
 
 @bp.route("/login")
 def login_client():
-    return tb.generate_systems_otp()
 
+    email = "mburuisaac086@gmail.com"
+
+    hash_en = HashAndEncrypt(email=email)
+    hashed_email = hash_en.hash_email()
+
+    client_object = tb.conditional_read(
+        table_name="clients", field="email", intended_value=hashed_email
+    )
+
+    return client_object.name

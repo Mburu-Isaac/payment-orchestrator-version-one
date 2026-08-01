@@ -91,7 +91,7 @@ class HashAndEncrypt:
             return client_fingerprint
 
     def hash_client_otp(self, otp):
-        hashed_otp = ph.hash(otp)
+        hashed_otp = sha256(otp.encode()).hexdigest()
         return hashed_otp
 
     def decrypt_recovery_pin(self, pin):
@@ -102,3 +102,9 @@ class HashAndEncrypt:
 
     def decryptid_number(self, idnumber):
         pass
+
+
+# hash_en = HashAndEncrypt()
+# hashed_otp = hash_en.hash_client_otp("2904")
+
+# print(hashed_otp)
