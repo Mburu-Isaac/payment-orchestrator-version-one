@@ -4,15 +4,24 @@ from ...extensions import ph, fernet
 
 class HashAndEncrypt:
 
-    def __init__(self, valuables):
-        self.valuable_data = valuables
-        self.encryptable = self.valuable_data.get("toEncrypt")
-        
-        if self.encryptable.get("transactionNumber") == self.encryptable.get("primaryNumber"):
+    def __init__(
+        self,
+        email=None,
+        password=None,
+        pin=None,
+        primary_number=None,
+        transactions_number=None
+    ):
+        self.email = email
+        self.password = password
+        self.pin = pin
+        self.primary_number = primary_number
+        self.transactions_number = transactions_number
+
+        if self.transactions_number == self.primary_number:
             self.single_contact = True
         else:
             self.single_contact = False
-
 
     def hash_email(self):
         email = self.valuable_data.get("email")
@@ -60,7 +69,9 @@ class HashAndEncrypt:
         email = self.valuable_data.get("email")
         primary_number = self.encryptable.get("primaryNumber")
 
-        client_identity = f"{nationalid_number}:{transaction_number}:{email}:{primary_number}"
+        client_identity = (
+            f"{nationalid_number}:{transaction_number}:{email}:{primary_number}"
+        )
         client_fingerprint = sha256(client_identity.encode()).hexdigest()
         return client_fingerprint
 
@@ -76,5 +87,3 @@ class HashAndEncrypt:
 
     def decryptid_number(self, idnumber):
         pass
-
-    

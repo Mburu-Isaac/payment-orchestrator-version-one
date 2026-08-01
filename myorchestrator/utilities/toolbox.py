@@ -34,6 +34,9 @@ class ToolBox:
             db.session.rollback()
             raise
 
+    def read(self):
+        pass
+
 
 
 
