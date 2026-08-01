@@ -34,8 +34,33 @@ class ToolBox:
             db.session.rollback()
             raise
 
-    def read(self):
-        pass
+    def conditional_read(
+        self,
+        model_name,
+        intended_value,
+        multiple_value_return=False
+    ):
+        
+    
+        if not multiple_value_return:
+            
+            return_object = db.session.execute(
+                db.select(model_name).where(
+                    model_name.field == intended_value
+                )
+            ).scalar()
+
+            return return_object
+
+        else:
+
+            return_object = db.session.execute(
+                db.select(model_name).where(
+                    model_name.field == intended_value
+                )
+            ).scalar()
+
+            return return_object
 
 
 
