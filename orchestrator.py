@@ -54,11 +54,12 @@ from myorchestrator.routes.auth import register_client
 
 orchestrator = launch_orchestrator()
 with orchestrator.app_context():
-    # db.create_all()
-    print(register_client())
+    db.create_all()
+    # print(register_client())
 
 
-print("data stored successfully")
+# print("data stored successfully")
+print("tables created")
 
 
 
