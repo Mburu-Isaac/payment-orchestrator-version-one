@@ -10,7 +10,8 @@ class HashAndEncrypt:
         password=None,
         pin=None,
         primary_number=None,
-        transactions_number=None
+        transactions_number=None,
+        national_number=None
     ):
         self.email = email
         self.password = password
@@ -23,34 +24,33 @@ class HashAndEncrypt:
         else:
             self.single_contact = False
 
+        self.national_number = national_number
+
     def hash_email(self):
-        email = self.valuable_data.get("email")
-        hashed_email = sha256(email.strip().lower().encode()).hexdigest()
+        hashed_email = sha256(self.email.strip().lower().encode()).hexdigest()
         return hashed_email
 
     def hash_password(self):
-        password = self.valuable_data.get("password")
+        password = self.password
         return ph.hash(password)
 
     def encrypt_pin(self):
-        pin = self.encryptable.get("recoveryPin")
+        pin = self.pin
         recovpin_encryption = fernet.encrypt(pin.encode())
         return recovpin_encryption
 
     def encrypt_transaction_contact(self) -> tuple:
 
-        primary_number = self.encryptable.get("primaryNumber")
-
         if self.single_contact == True:
-            contact = primary_number
+            contact = self.primary_number
             contact_encryption = fernet.encrypt(contact.encode())
             return contact_encryption, None
         else:
-            contact = self.encryptable.get("transactionNumber")
+            contact = self.transactions_number
             transactions_encryption = fernet.encrypt(contact.encode())
 
             encrypt_primary = self.encrypt_primary_contact(
-                primary_contact=primary_number
+                primary_contact=self.primary_number
             )
 
             return transactions_encryption, encrypt_primary
@@ -59,15 +59,15 @@ class HashAndEncrypt:
         return fernet.encrypt(primary_contact.encode())
 
     def encrypt_national_number(self):
-        national_number = self.encryptable.get("nationalNumber")
+        national_number = self.national_number
         return fernet.encrypt(national_number.encode())
 
     def generate_client_fingerprint(self):
 
-        nationalid_number = self.encryptable.get("nationalNumber")
-        transaction_number = self.encryptable.get("transactionNumber")
-        email = self.valuable_data.get("email")
-        primary_number = self.encryptable.get("primaryNumber")
+        nationalid_number = self.national_number
+        transaction_number = self.transactions_number
+        email = self.email
+        primary_number = self.primary_number
 
         client_identity = (
             f"{nationalid_number}:{transaction_number}:{email}:{primary_number}"
