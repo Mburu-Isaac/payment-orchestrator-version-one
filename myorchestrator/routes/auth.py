@@ -141,4 +141,5 @@ def login_client():
         table_name="clients", field="email", intended_value=hashed_email
     )
 
-    return client_object.name
+    if hashed_email == client_object.email:
+        return "welcome back"

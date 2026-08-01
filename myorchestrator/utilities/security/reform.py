@@ -104,7 +104,3 @@ class HashAndEncrypt:
         pass
 
 
-# hash_en = HashAndEncrypt()
-# hashed_otp = hash_en.hash_client_otp("2904")
-
-# print(hashed_otp)
