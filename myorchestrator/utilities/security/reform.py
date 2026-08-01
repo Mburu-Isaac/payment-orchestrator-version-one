@@ -27,8 +27,15 @@ class HashAndEncrypt:
         self.national_number = national_number
 
     def hash_email(self):
-        hashed_email = sha256(self.email.strip().lower().encode()).hexdigest()
-        return hashed_email
+        email = self.email
+        if email is not None:
+            hashed_email = sha256(email.strip().lower().encode()).hexdigest()
+            return hashed_email
+
+testreformhandler = HashAndEncrypt()
+testreformhandler.hash_email()
+print("test passed")
+
 
     # def hash_password(self):
     #     password = self.password
