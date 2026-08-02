@@ -1,8 +1,10 @@
 import secrets
 import os
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from myorchestrator.extensions import db
 from sqlalchemy import text
+# from .geolocation import Location
 
 
 
@@ -15,7 +17,7 @@ class ToolBox:
         otp_characters = os.environ.get("CHARACTERS")
         otp = ''.join(secrets.choice(otp_characters) for _ in range(5))
 
-        generated_at = datetime.now(timezone.utc)
+        generated_at = datetime.now(ZoneInfo("Africa/Nairobi"))
         expires_at = generated_at + timedelta(minutes=5)
         return otp, generated_at, expires_at
 
@@ -66,6 +68,8 @@ class ToolBox:
             return object_data
 
 
+from pprint import pprint
 
-
+tb = ToolBox()
+pprint(tb.generate_systems_otp())
 

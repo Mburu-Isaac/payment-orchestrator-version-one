@@ -90,8 +90,7 @@ def register_client():
 
     # return send_otp
 
-    # Write Database Objects: write Client object
-
+    # write Client object
     client = Client(
         name=name,
         national_id_number=encryptedid_number,
@@ -102,17 +101,16 @@ def register_client():
         recovery_pin=enrypted_recovery_pin,
         client_fingerprint=client_fingerprint,
     )
-
+    
+    # create parent table
     create_parent = tb.create(data=[client])
 
-    # Write Database Objects: write ClientPasswordHistory object
-
+    # write ClientPasswordHistory object
     client_password_history = ClientPasswordHistory(
         client=client, password=hashed_password
     )
 
-    # Write Database Objects: write ClientOTP object
-
+    # write ClientOTP object
     client_registration_otp = ClientOTP(
         client=client,
         otp=hashed_client_otp,
