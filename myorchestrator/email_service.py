@@ -31,12 +31,9 @@ class EmailHandler:
     def _render_template(
         self,
         template_name,
+        context
     ):
         # context.setdefault("year", datetime.now().year)
-
-        context = {
-
-        }
 
         template = self.jinja_environment.get_template(template_name)
         return template.render(context)
