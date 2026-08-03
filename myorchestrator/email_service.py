@@ -3,6 +3,7 @@ from jinja2 import Environment, FileSystemLoader
 from pathlib import Path
 import smtplib
 import os
+from .utilities.toolbox import ToolBox
 
 
 class EmailHandler:
@@ -112,33 +113,37 @@ class EmailHandler:
 
     def send_otp(self, otp_object):
 
-        # otp, expires_at, message, subject = self.draft._draft_otp()
 
-        hashed_otp = otp_object.get("otp")
-        unhashed_otp = ""
-        expires_at = otp_object.get("expires_at")
+        tb = ToolBox(
+            dict_or_json=otp_object
+        )
 
-        message = """ 
+        otp = tb.retrieve_structure_values("otp")
+        expires_at = tb.retrieve_structure_values("expiresAt")
+        client_name = tb.retrieve_structure_values("clientName")
+
+        message = f""" 
             Dear Client, 
 
             please use the following one time password to verify
             your email address:
 
-                        OTP: " "
+                        OTP: {otp}
 
             if you did not request the OTP please ignore this email
 
-            regards,
-            " "
+            Be well,
+            {client_name}
+
         """
 
         email_context = {
-            "otp":f"{hashed_otp} - unhashable to {unhashed_otp}",
+            "otp":otp,
             "sender_name":self.brand_name,
             "expires_at":expires_at.strftime("%H:%M")
         }
 
-        return email_context
+        return email_context, message
         
         # self.send_email(
         #     to_email=self.receiver_email,

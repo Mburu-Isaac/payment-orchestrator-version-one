@@ -13,10 +13,6 @@ class ToolBox:
     def __init__(self, dict_or_json=None):
         self.dict_or_json = dict_or_json
 
-    def retrieve_structure_values(self, key):
-        value = self.dict_or_json.get(f"{key}")
-        return value
-
     def generate_systems_otp(self) -> tuple:
         otp_characters = os.environ.get("CHARACTERS")
         otp = "".join(secrets.choice(otp_characters) for _ in range(5))
@@ -65,3 +61,7 @@ class ToolBox:
 
             object_data = return_object.fetchall()
             return object_data
+
+    def retrieve_structure_values(self, key):
+        value = self.dict_or_json.get(f"{key}")
+        return value

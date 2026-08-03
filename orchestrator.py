@@ -50,12 +50,13 @@
 from myorchestrator.extensions import db
 from myorchestrator import launch_orchestrator
 from myorchestrator.routes.auth import register_client, login_client
+from pprint import pprint
 
 
 orchestrator = launch_orchestrator()
 with orchestrator.app_context():
     # db.create_all()
-    print(register_client())
+    pprint(register_client())
     # print(login_client())
 
 

@@ -83,23 +83,6 @@ def register_client():
     if encrypted_primary_contact is None:
         encrypted_primary_contact = enrypted_transactions_contact
 
-    # Registration - Registration OTP
-    # 1: Generate OTP
-    otp_tuple = tb.generate_systems_otp()
-    registration_otp = otp_tuple[0]
-    generated_at = otp_tuple[1]
-    expires_at = otp_tuple[2]
-
-    # 2: Hash OTP
-    hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
-
-    # 3: Send OTP to client email
-    # send_otp = eh.send_otp(
-    #     otp_object=client_registration_otp_object
-    # )
-
-    return hashed_client_otp
-
     # write Client object
     # client = Client(
     #     name=name,
@@ -114,6 +97,30 @@ def register_client():
     
     # # create parent table
     # create_parent = tb.create(data=[client])
+
+    # if not create_parent:
+    #     return 'client record remains null'
+
+    # Registration - Registration OTP
+    # 1: Generate OTP
+    otp_tuple = tb.generate_systems_otp()
+    registration_otp = otp_tuple[0]
+    generated_at = otp_tuple[1]
+    expires_at = otp_tuple[2]
+
+    # 2: Hash OTP
+    hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
+
+    # 3: Send OTP to client email
+    send_otp = eh.send_otp(
+        otp_object={
+            "otp":registration_otp,
+            "expiresAt":expires_at,
+            "clientName":name
+        }
+    )
+
+    return send_otp
 
     # # write ClientPasswordHistory object
     # client_password_history = ClientPasswordHistory(
