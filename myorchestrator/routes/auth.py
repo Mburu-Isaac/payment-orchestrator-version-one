@@ -55,7 +55,17 @@ def register_client():
 
     # -- Registration - Hash and Encrypt collected data -
 
-    hash_en = HashAndEncrypt(valuables=valuables)
+    tb = ToolBox(dict_or_json=valuables)
+    encryptable_valuables = tb.retrieve_structure_values(key="toEncrypt")
+
+    hash_en = HashAndEncrypt(
+        email=tb.retrieve_structure_values(key="email"),
+        password=tb.retrieve_structure_values(key="password"),
+        pin=encryptable_valuables.get("recoveryPin"),
+        primary_number=encryptable_valuables.get("primaryNumber"),
+        transactions_number=encryptable_valuables.get("transactionNumber"),
+        national_number=encryptable_valuables.get("nationalNumber")
+    )
 
     hashed_email = hash_en.hash_email()
     hashed_password = hash_en.hash_password()
@@ -88,43 +98,43 @@ def register_client():
     #     otp_object=client_registration_otp_object
     # )
 
-    # return send_otp
+    return hashed_client_otp
 
     # write Client object
-    client = Client(
-        name=name,
-        national_id_number=encryptedid_number,
-        primary_number=encrypted_primary_contact,
-        transactions_number=enrypted_transactions_contact,
-        email=hashed_email,
-        password=hashed_password,
-        recovery_pin=enrypted_recovery_pin,
-        client_fingerprint=client_fingerprint,
-    )
+    # client = Client(
+    #     name=name,
+    #     national_id_number=encryptedid_number,
+    #     primary_number=encrypted_primary_contact,
+    #     transactions_number=enrypted_transactions_contact,
+    #     email=hashed_email,
+    #     password=hashed_password,
+    #     recovery_pin=enrypted_recovery_pin,
+    #     client_fingerprint=client_fingerprint,
+    # )
     
-    # create parent table
-    create_parent = tb.create(data=[client])
+    # # create parent table
+    # create_parent = tb.create(data=[client])
 
-    # write ClientPasswordHistory object
-    client_password_history = ClientPasswordHistory(
-        client=client, password=hashed_password
-    )
+    # # write ClientPasswordHistory object
+    # client_password_history = ClientPasswordHistory(
+    #     client=client, password=hashed_password
+    # )
 
-    # write ClientOTP object
-    client_registration_otp = ClientOTP(
-        client=client,
-        otp=hashed_client_otp,
-        otp_type="registration",
-        expires_at=expires_at,
-        created_at=generated_at,
-    )
+    # # write ClientOTP object
+    # client_registration_otp = ClientOTP(
+    #     client=client,
+    #     otp=hashed_client_otp,
+    #     otp_type="registration",
+    #     expires_at=expires_at,
+    #     created_at=generated_at,
+    # )
 
-    if create_parent:
-        create_child = tb.create(
-            data=[client_password_history, client_registration_otp]
-        )
+    # if create_parent:
+    #     create_child = tb.create(
+    #         data=[client_password_history, client_registration_otp]
+    #     )
 
-        return create_child
+    #     return create_child
 
 
 @bp.route("/login")

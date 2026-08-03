@@ -55,7 +55,8 @@ from myorchestrator.routes.auth import register_client, login_client
 orchestrator = launch_orchestrator()
 with orchestrator.app_context():
     # db.create_all()
-    print(login_client())
+    print(register_client())
+    # print(login_client())
 
 
 # print("data stored successfully")
