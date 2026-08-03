@@ -121,6 +121,7 @@ class EmailHandler:
         otp = tb.retrieve_structure_values("otp")
         expires_at = tb.retrieve_structure_values("expiresAt")
         client_name = tb.retrieve_structure_values("clientName")
+        subject = tb.retrieve_structure_values("subject")
 
         message = f""" 
             Dear Client, 
@@ -142,16 +143,14 @@ class EmailHandler:
             "sender_name":self.brand_name,
             "expires_at":expires_at.strftime("%H:%M")
         }
-
-        return email_context, message
         
-        # self.send_email(
-        #     to_email=self.receiver_email,
-        #     subject=subject,
-        #     template_name="emails/otp.html",
-        #     context=email_context,
-        #     body=message
-        # )
+        return self.send_email(
+            to_email=self.receiver_email,
+            subject=subject,
+            template_name="emails/otp.html",
+            context=email_context,
+            body=message
+        )
 
         # return {
         #     "success": True,

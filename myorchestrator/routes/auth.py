@@ -116,7 +116,8 @@ def register_client():
         otp_object={
             "otp":registration_otp,
             "expiresAt":expires_at,
-            "clientName":name
+            "clientName":name,
+            "subject":"Registration - OTP Verification"
         }
     )
 
