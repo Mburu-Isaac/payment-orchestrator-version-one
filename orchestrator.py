@@ -56,8 +56,8 @@ from pprint import pprint
 orchestrator = launch_orchestrator()
 with orchestrator.app_context():
     # db.create_all()
-    pprint(register_client())
-    # print(login_client())
+    # pprint(register_client())
+    print(login_client())
 
 
 # print("data stored successfully")

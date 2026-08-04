@@ -78,7 +78,7 @@ class EmailHandler:
             body=body
         )
 
-        return email_message
+        return email_message 
 
     #     #send email
     #     try:
@@ -141,7 +141,7 @@ class EmailHandler:
             "expires_at":expires_at.strftime("%H:%M")
         }
         
-        return self.send_email(
+        self.send_email(
             to_email=self.receiver_email,
             subject=subject,
             template_name="emails/otp.html",
