@@ -164,4 +164,5 @@ def login_client():
             client_attempted_otp="2904"
         )
 
-        return is_accurate
+        if is_accurate:
+            return 'welcome back'

@@ -67,20 +67,19 @@ class ToolBox:
         value = self.dict_or_json.get(f"{key}")
         return value
 
-    def _authenticate_otp(self, client, client_attempted_otp):
+    def _authenticate_otp(self, client, client_attempted_otp) -> bool:
 
         hash_en = HashAndEncrypt()
         hashed_otp_attempt = hash_en.hash_client_otp(client_attempted_otp)
 
-        print(hashed_otp_attempt)
-
         otp_object = self.conditional_read(
-            table_name="otps",
-            field="client_id",
-            intended_value=client.id
+            table_name="otps", field="client_id", intended_value=client.id
         )
 
-        database_stored_otp = otp_object.otp
-        
-        return database_stored_otp
+        db_stored_hash = otp_object.otp
+
+        if hashed_otp_attempt == db_stored_hash:
+            return hashed_otp_attempt == db_stored_hash
+        else:
+            return False
 
