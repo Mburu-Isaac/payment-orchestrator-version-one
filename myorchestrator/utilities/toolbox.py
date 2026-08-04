@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from myorchestrator.extensions import db
 from sqlalchemy import text
+from .security.reform import HashAndEncrypt
 
 # from .geolocation import Location
 
@@ -65,3 +66,21 @@ class ToolBox:
     def retrieve_structure_values(self, key):
         value = self.dict_or_json.get(f"{key}")
         return value
+
+    def _authenticate_otp(self, client, client_attempted_otp):
+
+        hash_en = HashAndEncrypt()
+        hashed_otp_attempt = hash_en.hash_client_otp(client_attempted_otp)
+
+        print(hashed_otp_attempt)
+
+        otp_object = self.conditional_read(
+            table_name="otps",
+            field="client_id",
+            intended_value=client.id
+        )
+
+        database_stored_otp = otp_object.otp
+        
+        return database_stored_otp
+

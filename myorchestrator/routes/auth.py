@@ -158,4 +158,10 @@ def login_client():
     )
 
     if hashed_email == client_object.email:
-        return "welcome back"
+
+        is_accurate = tb._authenticate_otp(
+            client=client_object,
+            client_attempted_otp="2904"
+        )
+
+        return is_accurate
