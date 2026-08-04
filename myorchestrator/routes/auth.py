@@ -84,22 +84,27 @@ def register_client():
         encrypted_primary_contact = enrypted_transactions_contact
 
     # write Client object
-    # client = Client(
-    #     name=name,
-    #     national_id_number=encryptedid_number,
-    #     primary_number=encrypted_primary_contact,
-    #     transactions_number=enrypted_transactions_contact,
-    #     email=hashed_email,
-    #     password=hashed_password,
-    #     recovery_pin=enrypted_recovery_pin,
-    #     client_fingerprint=client_fingerprint,
-    # )
+    client = Client(
+        name=name,
+        national_id_number=encryptedid_number,
+        primary_number=encrypted_primary_contact,
+        transactions_number=enrypted_transactions_contact,
+        email=hashed_email,
+        password=hashed_password,
+        recovery_pin=enrypted_recovery_pin,
+        client_fingerprint=client_fingerprint,
+    )
     
-    # # create parent table
-    # create_parent = tb.create(data=[client])
+    # create parent table
+    create_parent = tb.create(data=[client])
 
-    # if not create_parent:
-    #     return 'client record remains null'
+    if not create_parent:
+        return 'client record remains null'
+
+    # write ClientPasswordHistory object
+    client_password_history = ClientPasswordHistory(
+        client=client, password=hashed_password
+    )
 
     # Registration - Registration OTP
     # 1: Generate OTP
@@ -111,38 +116,34 @@ def register_client():
     # 2: Hash OTP
     hashed_client_otp = hash_en.hash_client_otp(otp=registration_otp)
 
-    # 3: Send OTP to client email
-    send_otp = eh.send_otp(
-        otp_object={
-            "otp":registration_otp,
-            "expiresAt":expires_at,
-            "clientName":name,
-            "subject":"Registration - OTP Verification"
-        }
+    # write ClientOTP object
+    client_registration_otp = ClientOTP(
+        client=client,
+        otp=hashed_client_otp,
+        otp_type="registration",
+        expires_at=expires_at,
+        created_at=generated_at,
     )
 
-    return send_otp
+    if create_parent:
+        create_child = tb.create(
+            data=[client_password_history, client_registration_otp]
+        )
 
-    # # write ClientPasswordHistory object
-    # client_password_history = ClientPasswordHistory(
-    #     client=client, password=hashed_password
-    # )
+        if create_child:
+            
+            # 3: Send OTP to client email
+            send_otp = eh.send_otp(
+                otp_object={
+                    "otp":registration_otp,
+                    "expiresAt":expires_at,
+                    "clientName":name,
+                    "subject":"Registration - OTP Verification"
+                }
+            )
 
-    # # write ClientOTP object
-    # client_registration_otp = ClientOTP(
-    #     client=client,
-    #     otp=hashed_client_otp,
-    #     otp_type="registration",
-    #     expires_at=expires_at,
-    #     created_at=generated_at,
-    # )
-
-    # if create_parent:
-    #     create_child = tb.create(
-    #         data=[client_password_history, client_registration_otp]
-    #     )
-
-    #     return create_child
+            if send_otp:
+                return "OTP was sent successfully"
 
 
 @bp.route("/login")
